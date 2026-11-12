@@ -48,7 +48,7 @@ async function share(request, env, kind, area, idsRaw) {
   const target = `/all?${q}#${items.length === 1 && kind === "f" ? items[0].id : "compare=" + items.map((i) => i.id).join(",")}`;
   const pick = items.find((i) => i.group !== "charted") || items[0];
   const card = `/cards/${area}/${pick.id}.png`;
-  const image = new URL((await asset(env, url, card)) ? card : "/brand/og.png", url).toString();
+  const image = `https://${url.host}${(await asset(env, url, card)) ? card : "/brand/og.png"}`;
   const page = await env.ASSETS.fetch(new URL("/all", url));
   const set = (sel, v) => [sel, { element: (e) => e.setAttribute("content", v) }];
   const rw = new HTMLRewriter()

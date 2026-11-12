@@ -38,7 +38,7 @@ h1{font:800 62px/1.02 "Public Sans";letter-spacing:-.025em}h1 em{font-style:norm
 <p class="s" style="margin-top:22px"><b>${Math.round(it.length_m)} m</b> long, <b>${Math.round(it.height_m * 10) / 10} m</b> tall</p></div>
 <div><span class="p">${known ? "On the chart" : "On no chart"}</span><p class="a">${areaName}</p></div></div>
 <div class="r"><canvas id="c" width="660" height="630"></canvas><span class="t">${it.id} in sonar, 160 m across</span></div>
-<script type="module">import { paintThumb, loadHf } from "/lib.js"; const hf = await loadHf(${JSON.stringify({ heightfield: it.heightfield })}); if (hf) paintThumb(document.getElementById("c"), hf, 0.62); window.__done = !!hf;</script></body></html>`;
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script><script type="module">import { paintThumb, loadHf } from "/lib.js"; const hf = await loadHf(${JSON.stringify({ heightfield: it.heightfield })}); if (hf) paintThumb(document.getElementById("c"), hf, 0.62); window.__done = !!hf;</script></body></html>`;
 };
 
 const b = await chromium.launch();
@@ -57,7 +57,7 @@ for (const a of JSON.parse(readFileSync(join(DIST, "api/areas.json"), "utf8"))) 
     if (!it?.heightfield) continue;
     if (!FRESH && existsSync(out)) { kept++; continue; }
     await page.setContent(card(it, a.name), { waitUntil: "networkidle" });
-    await page.waitForFunction(() => window.__done !== undefined, null, { timeout: 15000 }).catch(() => {});
+    await page.waitForFunction(() => window.__done !== undefined, null, { timeout: 8000 }).catch(() => {});
     if (!(await page.evaluate(() => window.__done))) { failed++; continue; }
     await page.screenshot({ path: out });
     made++;
