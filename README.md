@@ -1,6 +1,10 @@
+<p align="center"><img src="public/brand/social.png" alt="Wreck Hunt: lost ships are hiding in public sonar" width="100%"></p>
+
 # Wreck Hunt
 
 Find shipwrecks nobody has charted, in sonar maps the public already paid for.
+
+**Live board: https://wreckhunt.techguyverlabs.org**
 
 NOAA, NCEI and AusSeabed publish seabed depth maps (multibeam sonar, 0.5 to 4 m per pixel).
 Wreck Hunt scans them for every hard, ship-sized bump, removes everything already on a

@@ -5,11 +5,14 @@ const TABS = [
   ["map", "Map", (id) => "/map.html" + (id ? "#" + id : "")],
   ["lost", "Lost ships", () => "/lost.html"],
   ["ev", "A058 case file", () => "/docket.html"],
+  ["gh", "Source on GitHub", () => REPO],
 ];
-const MORE = new Set(["lost", "ev"]);
+const MORE = new Set(["lost", "ev", "gh"]);
+const REPO = "https://github.com/royherma/wreck-hunt";
+const PUBLIC = !document.querySelector('script[src*="/nav.js"]');
 
 const AREA = window.WH_AREA || "chesapeake_mouth";
-const withArea = (u) => (AREA === "chesapeake_mouth" ? u : u.replace(/^([^#?]*)(\?[^#]*)?/, (m, p, q) => p + (q ? q + "&" : "?") + "area=" + AREA));
+const withArea = (u) => (AREA === "chesapeake_mouth" || /^https?:/.test(u) ? u : u.replace(/^([^#?]*)(\?[^#]*)?/, (m, p, q) => p + (q ? q + "&" : "?") + "area=" + AREA));
 
 const currentId = () => (location.hash.match(/^#(?:compare=)?(A\d+)/) || [])[1] || null;
 
@@ -66,6 +69,9 @@ const css = `#wtabs{position:fixed;top:0;right:14px;height:36px;z-index:21474830
 #wmore .mp{position:absolute;top:calc(100% + 6px);right:0;min-width:180px;background:#fff;border:1px solid rgba(31,78,107,.22);border-radius:12px;box-shadow:0 14px 40px rgba(19,32,42,.18);padding:6px;display:none;flex-direction:column}
 #wmore.open .mp{display:flex}
 #wmore .mp a{border-radius:8px}
+#wbar{position:fixed;top:0;left:0;right:0;height:36px;background:#fff;border-bottom:1px solid #13202A;z-index:2147483000}
+#wbrand{position:absolute;left:18px;top:0;height:36px;display:flex;align-items:center;gap:9px;color:#13202A;text-decoration:none;font:700 14px "Public Sans",system-ui,sans-serif;letter-spacing:-.01em}
+#wbrand img{width:22px;height:22px;display:block}
 @media (max-width:900px){#wtabs{display:none}}`;
 
 function mount() {
@@ -116,6 +122,12 @@ function mount() {
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") { setOpen(false); setMore(false); } });
   panel.addEventListener("click", (e) => { try { localStorage.setItem("wh_area", new URL(e.target.closest("a").href).searchParams.get("area")); } catch {} });
   document.body.append(nav);
+  if (PUBLIC) {
+    const bar = document.createElement("div");
+    bar.id = "wbar";
+    bar.innerHTML = `<a id="wbrand" href="/"><img src="/brand/mark.svg" alt="">Wreck Hunt</a>`;
+    document.body.append(bar);
+  }
   const sync = () => {
     const a = active(), id = currentId();
     nav.querySelectorAll("a[data-k]").forEach((el) => {

@@ -387,7 +387,7 @@ function openDetail(id) {
 }
 
 function navGap() {
-  document.documentElement.style.setProperty("--navgap", Math.max(0, (document.documentElement.classList.contains("tu-nav") ? 36 : 0) - scrollY) + "px");
+  document.documentElement.style.setProperty("--navgap", Math.max(0, 36 - scrollY) + "px");
 }
 
 function pinTop() {
