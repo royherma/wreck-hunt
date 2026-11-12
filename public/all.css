@@ -293,3 +293,5 @@ body.hastray #gridview{padding-bottom:96px}
 #c3dw .wl.nw{border:2px solid #C2187F;color:#C2187F}
 #c3dw .wtip{position:absolute;left:0;top:0;z-index:4;pointer-events:none;background:#13202A;color:#fff;font:500 11.5px var(--sans);padding:3px 8px;white-space:nowrap}
 #c3dw .wtip[hidden]{display:none}
+.btn.share{border-color:#A3197F;color:#A3197F}
+.btn.share:hover{background:#A3197F;color:#fff}

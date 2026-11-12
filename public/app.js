@@ -1,6 +1,7 @@
 import { mountSearch, textOf } from "/search.js";
 import { openSpot, closeSpot } from "/where.js";
 import { $, reduce, fmt, f1, sc, VERDICT, params, fetchJson, loadHunt, loadHf, thumbFor, contourBackdrop, makeViewer, drawProfile } from "/lib.js";
+import { shareUrl, copyShare } from "/share.js";
 
 const tipEl = $("#tip");
 function tipHtml(item) {
@@ -350,6 +351,7 @@ async function select(item, fromKey, quiet) {
   closeSpot();
   $("#spotbtn").hidden = S.mode !== "real";
   { const l = $("#cmplink"); l.hidden = S.mode !== "real" || !item.all_id; l.href = "/all.html#compare=" + (item.all_id || ""); }
+  { const b = $("#leadshare"); b.hidden = S.mode !== "real" || !item.all_id; b.onclick = () => copyShare(b, shareUrl([item.all_id])); }
   const my = ++S.token;
   setUrl(null, item.id);
   S.cardEls.forEach((el, id) => el.setAttribute("aria-pressed", String(id === item.id)));

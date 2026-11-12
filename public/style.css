@@ -292,3 +292,6 @@ h1{margin:0;font:800 56px/0.95 var(--sans);letter-spacing:-.045em;color:var(--in
 .snone{padding:12px;font-size:12px;color:var(--mute)}
 .thumb .xr{position:absolute;right:6px;top:5px;font:600 10px var(--sans);background:rgba(246,249,250,.88);color:var(--mute);padding:2px 5px}
 a.xl{color:var(--chart);font-weight:600}
+button.cmplink{all:unset;cursor:pointer;font:600 11.5px var(--sans);color:#A3197F;text-decoration:underline;text-underline-offset:3px;justify-self:start;align-self:flex-start}
+button.cmplink[hidden]{display:none}
+button.cmplink:focus-visible{outline:2px solid var(--ink);outline-offset:2px}

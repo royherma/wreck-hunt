@@ -1,6 +1,7 @@
 import { openSpot, closeSpot } from "/where.js";
 import { mountSearch, textOf } from "/search.js";
 import { openCompare, closeCompare, isCompareOpen } from "/compare.js";
+import { shareUrl, copyShare } from "/share.js";
 import { buildAll, similarity } from "/shape.js";
 import { $, reduce, fmt, f1, sc, fetchJson, loadHf, paintThumb, contourBackdrop, makeViewer, drawProfile } from "/lib.js";
 
@@ -444,6 +445,7 @@ async function boot() {
   $("#dback").addEventListener("click", back);
   $("#dcmp").addEventListener("click", () => { const it = S.list[S.idx]; if (it) togglePick(it.id); });
   $("#dsim").addEventListener("click", () => { const it = S.list[S.idx]; if (it) findSimilar(it.id); });
+  $("#dshare").addEventListener("click", () => { const it = S.list[S.idx]; if (it) copyShare($("#dshare"), shareUrl([it.id])); });
   $("#spotbtn").addEventListener("click", () => S.open && openSpot(S.list[S.idx].id));
   $("#dprev").addEventListener("click", () => step(-1));
   $("#dnext").addEventListener("click", () => step(1));

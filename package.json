@@ -8,7 +8,8 @@
   "scripts": {
     "start": "node server.mjs",
     "sample": "node public/sample/make-sample.mjs",
-    "build:public": "node scripts/build-public.mjs"
+    "build:public": "node scripts/build-public.mjs",
+    "build:cards": "node scripts/build-cards.mjs && node scripts/build-public.mjs"
   },
   "engines": { "node": ">=20" }
 }

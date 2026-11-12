@@ -3,6 +3,7 @@ import { centreOf, frame, paintField, contourSegs, profile } from "/shape.js";
 import { show3d, hide3d, fit3d } from "/cmp3d.js";
 import { drawMap } from "/cmpmap.js";
 import { showWhole, hideWhole } from "/wholescan.js";
+import { shareUrl, copyShare } from "/share.js";
 
 const $ = (s) => document.querySelector(s);
 const INK = ["#0E7C7B", "#1F5FA0", "#4C8C2B", "#2E4A62", "#3AA0A0"];
@@ -33,7 +34,21 @@ function colorsFor(items) {
   return items.map((it) => (it.group === "charted" ? INK[a++ % INK.length] : MAG[b++ % MAG.length]));
 }
 
+let urlRead = false;
+function readUrlState() {
+  if (urlRead) return;
+  urlRead = true;
+  const q = new URLSearchParams(location.search);
+  if (["pics", "3d"].includes(q.get("view"))) st.view = q.get("view");
+  if (["row", "stack"].includes(q.get("lay"))) st.lay = q.get("lay");
+  if (["true", "match"].includes(q.get("size"))) st.mode = q.get("size");
+  if (q.get("around") === "whole" || ["250", "500", "1000"].includes(q.get("around"))) st.around = q.get("around") === "whole" ? "whole" : Number(q.get("around"));
+  if (["1", "3", "6"].includes(q.get("stretch"))) st.stretch = Number(q.get("stretch"));
+}
+const shareState = () => ({ view: st.view === "3d" ? "3d" : null, lay: st.lay !== "row" ? st.lay : null, size: st.mode !== "true" ? st.mode : null, around: st.view === "3d" && st.around ? st.around : null, stretch: st.stretch || null });
+
 export async function openCompare(ctx) {
+  readUrlState();
   st.ctx = ctx;
   st.items = ctx.items.slice(0, ctx.max || 8);
   st.open = true;
@@ -49,6 +64,7 @@ function wire() {
   if (wired) return;
   wired = true;
   $("#cclose").addEventListener("click", () => (st.ctx?.back ? st.ctx.back() : closeCompare()));
+  $("#cshare").addEventListener("click", () => copyShare($("#cshare"), shareUrl(st.items.map((it) => it.id), shareState())));
   const seg = (id, key, cast) => document.querySelectorAll(`#${id} .chip`).forEach((c) => c.addEventListener("click", () => { st[key] = cast(c.dataset.v); sync(); render(); }));
   seg("csize", "mode", String);
   seg("cstretch", "stretch", Number);
