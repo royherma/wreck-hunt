@@ -7,7 +7,7 @@ const OUT = join(ROOT, "dist");
 const WEB = join(ROOT, "out/web");
 const CELL = Number(process.env.PUBLIC_CELL_KM) || 20;
 const DEF = "chesapeake_mouth";
-const LOCAL_ONLY = ["build.html", "build.js", "map.html", "map.js", "map.css", "docket.html", "docket.css", "docket"];
+const LOCAL_ONLY = ["build.html", "build.js", "map.html", "map.js", "docket.html", "docket.css", "docket"];
 
 const blur = (it) => {
   if (it.group === "charted" || it.my_verdict === "charted") return it;

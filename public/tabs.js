@@ -69,7 +69,8 @@ const css = `#wtabs{position:fixed;top:0;right:14px;height:36px;z-index:21474830
 #wmore .mp{position:absolute;top:calc(100% + 6px);right:0;min-width:180px;background:#fff;border:1px solid rgba(31,78,107,.22);border-radius:12px;box-shadow:0 14px 40px rgba(19,32,42,.18);padding:6px;display:none;flex-direction:column}
 #wmore.open .mp{display:flex}
 #wmore .mp a{border-radius:8px}
-#wbar{position:fixed;top:0;left:0;right:0;height:36px;background:#fff;border-bottom:1px solid #13202A;z-index:2147483000}
+html.wpub{display:flex;flex-direction:column}
+#wbar{position:relative;flex:none;height:36px;background:#fff;border-bottom:1px solid #13202A;z-index:2147483000}
 #wbrand{position:absolute;left:18px;top:0;height:36px;display:flex;align-items:center;gap:9px;color:#13202A;text-decoration:none;font:700 14px "Public Sans",system-ui,sans-serif;letter-spacing:-.01em}
 #wbrand img{width:22px;height:22px;display:block}
 @media (max-width:900px){#wtabs{display:none}}`;
@@ -127,7 +128,8 @@ function mount() {
     const bar = document.createElement("div");
     bar.id = "wbar";
     bar.innerHTML = `<a id="wbrand" href="/"><img src="/brand/mark.svg" alt="">Wreck Hunt</a>`;
-    document.body.append(bar);
+    document.documentElement.classList.add("wpub");
+    document.documentElement.insertBefore(bar, document.body);
   }
   const sync = () => {
     const a = active(), id = currentId();

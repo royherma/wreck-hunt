@@ -18,7 +18,7 @@ html{
 }
 body{margin:0;color:var(--ink);font:400 13px/1.35 var(--sans);position:relative}
 #bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-#app{position:relative;z-index:1;display:grid;gap:10px 22px;padding:10px 22px 12px}
+#app{position:relative;z-index:1;display:grid;gap:10px 22px;padding:18px 22px 12px}
 .n,i.n{font-family:var(--num);font-style:italic;font-weight:500;letter-spacing:0}
 i{font-family:var(--num);font-style:italic;font-weight:500}
 h1{margin:0;font:800 56px/0.95 var(--sans);letter-spacing:-.045em;color:var(--ink)}
