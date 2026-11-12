@@ -10,3 +10,4 @@ docs/REMAINING.md
 *.bak*
 .DS_Store
 node_modules/
+dist/

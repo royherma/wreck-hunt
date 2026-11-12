@@ -75,6 +75,18 @@ Shipwreck Act gives most wrecks to the state, and inside marine sanctuaries dist
 is a federal offence. Finding is legal. Disturbing is not. Report a real find to the state
 historic preservation office or NOAA, not to the internet.
 
+## Publish the board
+
+```sh
+npm run build:public      # writes dist/: pages + board data, no private folders
+npx wrangler pages deploy dist --project-name wreck-hunt
+```
+
+The build drops the local-only pages (map, live build, case files), puts every uncharted
+lead in a 20 km square (`PUBLIC_CELL_KM` to change it), rounds depths to 5 m, and fails if a
+file is over Cloudflare's 25 MiB limit or a `private` folder slipped in. `AREAS=a,b` ships
+only some areas.
+
 ## Add an area
 
 1. Add an entry to `AREAS` in `bin/areas.py` (name, bounding box, chart cells, UTM zone).
@@ -82,6 +94,12 @@ historic preservation office or NOAA, not to the internet.
 3. It shows up in the area menu on every page.
 
 Ranked candidate areas: `docs/next-regions.md`.
+
+## Where this is going
+
+A scan network: anyone runs one command, their computer scans a sonar tile nobody has
+scanned yet, a second computer checks it, and the close-ups land on a shared public board
+where people vote Keep / Drop. Plan and phases: `docs/scan-network.md`.
 
 ## Help wanted
 
