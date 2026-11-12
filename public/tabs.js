@@ -122,6 +122,7 @@ function mount() {
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") { setOpen(false); setMore(false); } });
   panel.addEventListener("click", (e) => { try { localStorage.setItem("wh_area", new URL(e.target.closest("a").href).searchParams.get("area")); } catch {} });
   document.body.append(nav);
+  if (nav.querySelector('a[data-k="ev"]')) fetch("/docket.html", { method: "HEAD" }).then((r) => { if (!r.ok) nav.querySelector('a[data-k="ev"]')?.remove(); }).catch(() => {});
   if (PUBLIC) {
     const bar = document.createElement("div");
     bar.id = "wbar";
