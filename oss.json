@@ -1,0 +1,8 @@
+{
+  "mode": "public-first",
+  "public": "royherma/wreck-hunt",
+  "private_paths": ["^out/", "^data/", "(^|/)private/", "^dist/", "^\\.claude/(?!commands/)"],
+  "content_rules": [
+    { "pattern": "\"(lat|lon)\"\\s*:\\s*-?[0-9]+\\.[0-9]{3,}", "paths": "^(contrib|public)/.*\\.json$" }
+  ]
+}
