@@ -1,0 +1,160 @@
+{
+ "area": "Bayfield, Lake Superior, Wisconsin",
+ "source": "Wisconsin Historical Society shipwreck list",
+ "ships": [
+  {
+   "name": "Bob Cook (1907)",
+   "type": "scow",
+   "length_m": 30,
+   "cargo": null,
+   "where": "Cornucopia",
+   "status": "no public position",
+   "story": "The scow Bob Cook foundered somewhere between Superior, Wisconsin and Bayfield, Wisconsin in November of 1937.",
+   "source": "https://www.wisconsinshipwrecks.org/Vessel/Details/71",
+   "could_be": []
+  },
+  {
+   "name": "Clarence (1930)",
+   "type": "gas screw",
+   "length_m": 10,
+   "cargo": "Built as a fish tug, converted to a bumboat (harbor supply boat). She had $3,500 worth of supplies on board.",
+   "where": "Superior",
+   "status": "no public position",
+   "story": "Clarence burned and exploded at Superior, Wisconsin on June 30, 1938 after filling her 150-gallon gasoline tank. A short in the starting motor was thought to have caused the blaze, which destroyed the vessel.",
+   "source": "https://www.wisconsinshipwrecks.org/Vessel/Details/107",
+   "could_be": []
+  },
+  {
+   "name": "Commodore Jack Barry (1885)",
+   "type": "tug",
+   "length_m": 22,
+   "cargo": "None at the time of the fire.",
+   "where": "Superior",
+   "status": "no public position",
+   "story": "",
+   "source": "https://www.wisconsinshipwrecks.org/Vessel/Details/116",
+   "could_be": []
+  },
+  {
+   "name": "Herring King",
+   "type": "tug",
+   "length_m": null,
+   "cargo": "Loaded with a good load of fish from the Moe Fishery on Sand Island.",
+   "where": "Sand Bay",
+   "status": "remains known",
+   "story": "Hull towed to Sand Island and used as a cabin base",
+   "source": "https://shotlinediving.com/wreck/herring-king-fish-hawk/",
+   "could_be": []
+  },
+  {
+   "name": "Ira H. Owen (1887)",
+   "type": "steam screw",
+   "length_m": 80,
+   "cargo": "116,000 bushels of barley which was a light load.",
+   "where": "Lake Superior",
+   "status": "unfound",
+   "story": "No recorded search. 19 lost in the 1905 Mataafa storm; wreckage seen 12 miles east of Michigan Island",
+   "source": "https://en.wikipedia.org/wiki/SS_Ira_H._Owen",
+   "could_be": []
+  },
+  {
+   "name": "John A. Paige (1881)",
+   "type": "tug",
+   "length_m": 23,
+   "cargo": "Had been in the process of building a log raft for towing.",
+   "where": "Cornucopia",
+   "status": "unclear",
+   "story": "Burned to the waterline in Siskiwit Bay, 1892",
+   "source": "https://www.wisconsinshipwrecks.org/Vessel/Details/317",
+   "could_be": []
+  },
+  {
+   "name": "Manistee (1867)",
+   "type": "steam screw",
+   "length_m": 56,
+   "cargo": "10,000 bushels of oats, 90 tons of mill feed, 1,254 barrels of flour, 9 tons of furniture and merchandise, a large quant",
+   "where": "Lake Superior",
+   "status": "unfound",
+   "story": "Sheltered at Bayfield for 4 days, left on the 5th and vanished with all aboard",
+   "source": "https://en.wikipedia.org/wiki/SS_Manistee_(1867)",
+   "could_be": []
+  },
+  {
+   "name": "May Corgan (1883?)",
+   "type": "tug",
+   "length_m": null,
+   "cargo": "Unknown",
+   "where": "Lake Superior",
+   "status": "located, not surveyed",
+   "story": "Lost off Bark Point when the tow line parted in a gale; probably scattered in about 30 ft",
+   "source": "https://shotlinediving.com/wreck/may-corgan/",
+   "could_be": []
+  },
+  {
+   "name": "Ozaukee (1861)",
+   "type": "steam paddle",
+   "length_m": 30,
+   "cargo": "Supplies for south shore fishermen and Montreal River miners.",
+   "where": "Lake Superior",
+   "status": "no public position",
+   "story": "On may 26, 1884 the sidewheel steamer tug Ozaukee loaded supplies for south shore fishermen and Montreal River miners and headed out facing a stiff breeze.",
+   "source": "https://www.wisconsinshipwrecks.org/Vessel/Details/489",
+   "could_be": []
+  },
+  {
+   "name": "Prussia (1873)",
+   "type": "steam screw",
+   "length_m": 42,
+   "cargo": "light",
+   "where": "Lake Superior",
+   "status": "position listed, not surveyed",
+   "story": "Burned off Sand Island; the light keeper saved all 11 crew",
+   "source": "https://wisconsinshipwrecks.org/Vessel/Details/514",
+   "could_be": []
+  },
+  {
+   "name": "T.H. Camp (1876)",
+   "type": "steam screw",
+   "length_m": 20,
+   "cargo": "Load of camp supplies for W.T. Gardner & Company's lumber camp at the head of Madeline Island.",
+   "where": "La Pointe",
+   "status": "no public position",
+   "story": "The T.H.Camp simply foundered enroute from Ashland via Bayfield to the northern tip of Madeline Island while carrying a deck load estimated at nearly 20 tons of supplies for the W.T. Gardner lumber camp.",
+   "source": "https://www.wisconsinshipwrecks.org/Vessel/Details/597",
+   "could_be": []
+  },
+  {
+   "name": "Big Bay Sloop",
+   "type": "sloop",
+   "length_m": 8,
+   "cargo": null,
+   "where": "La Pointe",
+   "status": "no public position",
+   "story": "",
+   "source": "https://www.wisconsinshipwrecks.org/Vessel/Details/657",
+   "could_be": []
+  },
+  {
+   "name": "Arthur (?)",
+   "type": "tug",
+   "length_m": 12,
+   "cargo": null,
+   "where": "Washburn",
+   "status": "no public position",
+   "story": "",
+   "source": "https://www.wisconsinshipwrecks.org/Vessel/Details/735",
+   "could_be": []
+  },
+  {
+   "name": "Cormorant (1873)",
+   "type": "steam barge",
+   "length_m": 67,
+   "cargo": "Iron ore, lumber.",
+   "where": "Red Cliff",
+   "status": "unclear",
+   "story": "Burned off Basswood Island; the hull may have been towed away and salvaged",
+   "source": "https://shotlinediving.com/wreck/cormorant-us-125334/",
+   "could_be": []
+  }
+ ]
+}

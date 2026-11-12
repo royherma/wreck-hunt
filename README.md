@@ -24,6 +24,29 @@ flowchart LR
   F --> G[Shortlist page]
 ```
 
+## Help find lost ships
+
+Your computer can search a stretch of seabed nobody has looked at yet, and add what it finds
+to the shared map at https://wreckhunt.techguyverlabs.org.
+
+1. **Get the code**
+   ```sh
+   git clone https://github.com/royherma/wreck-hunt && cd wreck-hunt
+   python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
+   ```
+2. **Start a hunt.** Open the folder in [Claude Code](https://claude.com/claude-code) and name a place:
+   ```
+   /hunt Bunurong Marine Park, Victoria, Australia
+   ```
+   It follows [`CLAUDE.md`](CLAUDE.md): downloads the public sonar, finds every ship-sized bump,
+   proves the scanner on known wrecks, checks the best ones by eye. Codex or any other agent:
+   "follow CLAUDE.md and run a hunt on <place>". No agent: the steps are below.
+3. **It opens a pull request** with `contrib/<area>/` only: the best 200 close-ups, scores,
+   the recall test, new finds placed in a 20 km square. Merged areas appear on the live map.
+
+Good first hunts are in `docs/next-regions.md`. `contrib/bayfield/` shows what a finished
+contribution looks like.
+
 ## Try it in 1 minute (no downloads)
 
 ```sh
@@ -53,6 +76,7 @@ Every script reads the area from `AREA=<key>` (see `bin/areas.py`) and writes to
 | 6 | `bin/rank.py`, `bin/edges.py` | Score each lead (jagged, scour, steep sides, straight edges) |
 | 7 | `bin/export.py` | Write the board data to `out/web/<area>/` |
 | 8 | `bin/missing.py` | Lost ships in the area with no known position |
+| 9 | `scripts/package-area.mjs <area>` | Pack the results for a pull request, new finds blurred |
 
 Example: `cd bin && AREA=bayfield ../.venv/bin/python -W ignore scan.py`
 

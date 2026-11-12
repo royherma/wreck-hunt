@@ -5,9 +5,10 @@ const TABS = [
   ["map", "Map", (id) => "/map.html" + (id ? "#" + id : "")],
   ["lost", "Lost ships", () => "/lost.html"],
   ["ev", "A058 case file", () => "/docket.html"],
+  ["help", "Help find wrecks", () => "/contribute.html"],
   ["gh", "Source on GitHub", () => REPO],
 ];
-const MORE = new Set(["lost", "ev", "gh"]);
+const MORE = new Set(["lost", "ev", "help", "gh"]);
 const REPO = "https://github.com/royherma/wreck-hunt";
 const PUBLIC = !document.querySelector('script[src*="/nav.js"]');
 
@@ -22,6 +23,7 @@ function active() {
   if (p.startsWith("/lost")) return "lost";
   if (p.startsWith("/build")) return "build";
   if (p.startsWith("/docket")) return "ev";
+  if (p.startsWith("/contribute")) return "help";
   if (p.startsWith("/all")) return document.querySelector("#cmpview:not([hidden])") ? "cmp" : "all";
   return "short";
 }
@@ -73,6 +75,9 @@ html.wpub{display:flex;flex-direction:column}
 #wbar{position:relative;flex:none;height:36px;background:#fff;border-bottom:1px solid #13202A;z-index:2147483000}
 #wbrand{position:absolute;left:18px;top:0;height:36px;display:flex;align-items:center;gap:9px;color:#13202A;text-decoration:none;font:700 14px "Public Sans",system-ui,sans-serif;letter-spacing:-.01em}
 #wbrand img{width:22px;height:22px;display:block}
+#whelp{position:absolute;left:150px;top:6px;height:24px;display:flex;align-items:center;gap:6px;padding:0 11px;border-radius:999px;background:#A3197F;color:#fff;text-decoration:none;font:700 12px "Public Sans",system-ui,sans-serif}
+#whelp:hover{background:#13202A}
+#whelp[aria-current]{background:#13202A}
 @media (max-width:900px){#wtabs{display:none}}`;
 
 function mount() {
@@ -127,7 +132,7 @@ function mount() {
   if (PUBLIC) {
     const bar = document.createElement("div");
     bar.id = "wbar";
-    bar.innerHTML = `<a id="wbrand" href="/"><img src="/brand/mark.svg" alt="">Wreck Hunt</a>`;
+    bar.innerHTML = `<a id="wbrand" href="/"><img src="/brand/mark.svg" alt="">Wreck Hunt</a><a id="whelp" href="/contribute.html"${location.pathname.startsWith("/contribute") ? ' aria-current="page"' : ""}>Help find wrecks, it\'s open source</a>`;
     document.documentElement.classList.add("wpub");
     document.documentElement.insertBefore(bar, document.body);
   }

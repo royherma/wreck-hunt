@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Help find lost ships - Wreck Hunt</title>
+<link rel="icon" href="/brand/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/brand/icon-180.png">
+<meta name="description" content="Point your computer at a stretch of seabed nobody has searched. Claude Code runs the hunt and sends the results to the shared map.">
+<meta property="og:title" content="Your computer can find a shipwreck">
+<meta property="og:description" content="Point it at a stretch of seabed nobody has searched. Claude Code runs the hunt and adds what it finds to the shared map">
+<meta property="og:image" content="https://wreckhunt.techguyverlabs.org/brand/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://wreckhunt.techguyverlabs.org/brand/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<script src="/area.js"></script>
+<script src="http://127.0.0.1:4800/nav.js" defer></script>
+<script src="/tabs.js" defer></script>
+<style>
+html{height:auto}
+body.helppage{min-height:0}
+#help{position:relative;z-index:1;max-width:1420px;margin:0 auto;padding:24px 28px 28px;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px 30px}
+#help header{grid-column:1/3;display:flex;align-items:flex-end;justify-content:space-between;gap:30px}
+#help h1{font-size:46px}
+#help .lead{margin:8px 0 0;font-size:16px;color:var(--ink);max-width:860px}
+#help .lead i{font-size:19px;color:var(--chart)}
+.flow{grid-column:1/3;display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--line);background:rgba(255,255,255,.75)}
+.flow div{padding:9px 14px;border-right:1px solid var(--line);position:relative}
+.flow div:last-child{border-right:0;background:rgba(163,25,127,.06)}
+.flow b{display:block;font:italic 500 19px var(--num);color:var(--chart)}
+.flow span{font:600 13px/1.3 var(--sans);color:var(--ink)}
+.flow div:not(:last-child)::after{content:"";position:absolute;right:-6px;top:50%;width:10px;height:10px;border-top:1px solid var(--line);border-right:1px solid var(--line);background:#fff;transform:translateY(-50%) rotate(45deg);z-index:1}
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:grid;grid-template-columns:40px 1fr;gap:3px 14px;padding:13px 18px;background:#fff;border:1px solid var(--line)}
+.step>:not(b){grid-column:2}
+.step>b{grid-row:1/5;font:italic 500 38px/1 var(--num);color:var(--mag)}
+.step h2{margin:0;font:700 17px var(--sans);color:var(--ink)}
+.step p{margin:0;font-size:13.5px;color:var(--mute)}
+.cmd{display:flex;align-items:center;gap:8px;margin-top:6px;background:#13202A;color:#E8F2F7;font:500 13px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;padding:9px 10px 9px 12px;overflow:hidden}
+.cmd code{flex:1;white-space:pre;overflow-x:auto}
+.cmd button{all:unset;cursor:pointer;font:600 11.5px var(--sans);color:#13202A;background:#A9CFE1;padding:4px 9px}
+.cmd button:hover{background:#fff}
+.cmd button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.side{display:flex;flex-direction:column;gap:10px;min-width:0}
+.box{background:#fff;border:1px solid var(--line);padding:11px 16px}
+.box h3{margin:0 0 8px;font:700 13px var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.areas{display:flex;flex-direction:column}
+.areas a{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:baseline;padding:4px 0;border-top:1px solid var(--faint);color:var(--ink);text-decoration:none;font-size:13.5px}
+.areas a:first-child{border-top:0}
+.areas a:hover b{text-decoration:underline}
+.areas em{font:italic 500 14px var(--num);color:var(--chart);white-space:nowrap}
+.areas .by{font:600 10.5px var(--sans);color:#fff;background:var(--mag);padding:1px 7px;border-radius:99px}
+.next li{margin:0 0 6px;font-size:13.5px}
+.next li span{color:var(--mute)}
+.next ul,.need ul{margin:0;padding-left:18px}
+.need li{font-size:13.5px;margin-bottom:4px}
+.rule{border-left:3px solid var(--mag);background:rgba(163,25,127,.05)}
+.rule p{margin:0;font-size:13.5px}
+.gh{flex:none;display:inline-flex;align-items:center;gap:8px;margin-bottom:4px;font:700 14px var(--sans);color:#fff;background:var(--chart);padding:10px 16px;text-decoration:none}
+.gh:hover{background:var(--ink)}
+@media (max-width:1000px){#help{grid-template-columns:1fr}#help header,.flow{grid-column:1}.flow{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body class="helppage">
+<main id="help">
+  <header>
+    <div><h1>Help find lost ships</h1>
+    <p class="lead">Point your computer at a stretch of seabed nobody has searched. Claude Code runs the hunt and sends what it finds to the shared map. The first area re-found <i>72 of 80</i> charted wrecks with no hints.</p></div>
+    <a class="gh" href="https://github.com/royherma/wreck-hunt">Open the code on GitHub</a>
+  </header>
+
+  <div class="flow" aria-label="How a hunt runs">
+    <div><b>1</b><span>Pick a coast with public sonar</span></div>
+    <div><b>2</b><span>Download the seabed map</span></div>
+    <div><b>3</b><span>Find every ship-sized bump</span></div>
+    <div><b>4</b><span>Prove it on known wrecks</span></div>
+    <div><b>5</b><span>Check the best ones by eye</span></div>
+    <div><b>6</b><span>Pull request, then it's on this map</span></div>
+  </div>
+
+  <section class="steps" aria-label="Three steps">
+    <div class="step"><b>1</b><h2>Get the code</h2><p>Mac or Linux, Python 3.12, Node 20. 1 to 10 GB of free disk, no GPU.</p>
+      <div class="cmd"><code>git clone https://github.com/royherma/wreck-hunt && cd wreck-hunt
+python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt</code><button type="button" data-copy>Copy</button></div></div>
+    <div class="step"><b>2</b><h2>Start a hunt</h2><p>Open the folder in Claude Code and name a place. It reads the guide in the repo, says how big the download is, then works through the 13 steps.</p>
+      <div class="cmd"><code>/hunt Bunurong Marine Park, Victoria, Australia</code><button type="button" data-copy>Copy</button></div>
+      <p>Codex or another agent: "Follow CLAUDE.md and run a hunt on &lt;place&gt;". No agent: the same steps are in the README.</p></div>
+    <div class="step"><b>3</b><h2>It opens a pull request</h2><p>Only the results go up: the best 200 close-ups, the scores, the recall test, and new finds placed in a 20 km square. Once merged, the area shows up in the area menu here.</p>
+      <div class="cmd"><code>node scripts/package-area.mjs &lt;area&gt; && gh pr create</code><button type="button" data-copy>Copy</button></div></div>
+  </section>
+
+  <aside class="side">
+    <div class="box"><h3>Searched so far</h3><div class="areas" id="areas"><span class="n">Loading</span></div></div>
+    <div class="box next"><h3>Good next hunts</h3><ul>
+      <li><b>Bunurong Marine Park, Australia</b> <span>2 m, 30 MB: a quick first hunt</span></li>
+      <li><b>Tasmania east coast</b> <span>0.5 m, 717 MB, rarely searched</span></li>
+      <li><b>California seafloor maps</b> <span>2 m, state science surveys</span></li>
+      <li><b>Bass Strait, Australia</b> <span>2 m, on the Melbourne shipping route</span></li>
+    </ul></div>
+    <div class="box rule"><p><b>Finding is legal. Disturbing is not.</b> Exact spots of new finds stay on your computer. Report a real find to the state or NOAA, never online.</p></div>
+  </aside>
+</main>
+<script type="module">
+const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+document.querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(b.previousElementSibling.textContent); b.textContent = "Copied"; } catch { b.textContent = "Select and copy"; }
+  setTimeout(() => (b.textContent = "Copy"), 1600);
+}));
+fetch("/api/areas", { cache: "no-store" }).then((r) => r.json()).then((list) => {
+  const done = list.filter((a) => !a.running);
+  document.getElementById("areas").innerHTML = done.map((a) => `<a href="/?area=${esc(a.key)}"><b>${esc(a.name)}</b>${a.contributed ? '<span class="by">contributed</span>' : "<span></span>"}<em>${a.km2 ? Number(a.km2).toLocaleString("en-US") + " km²" : ""}</em></a>`).join("") || "<span>None yet</span>";
+}).catch(() => { document.getElementById("areas").innerHTML = "<span>Could not load the list</span>"; });
+</script>
+</body>
+</html>

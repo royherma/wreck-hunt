@@ -1,27 +1,13 @@
 import { cpSync, mkdirSync, readFileSync, writeFileSync, readdirSync, rmSync, existsSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { blurHunt, blurAll, CELL } from "./blur.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "dist");
 const WEB = join(ROOT, "out/web");
-const CELL = Number(process.env.PUBLIC_CELL_KM) || 20;
 const DEF = "chesapeake_mouth";
 const LOCAL_ONLY = ["build.html", "build.js", "map.html", "map.js", "docket.html", "docket.css", "docket"];
-
-const blur = (it) => {
-  if (it.group === "charted" || it.my_verdict === "charted") return it;
-  const out = { ...it };
-  if (it.where) {
-    const snap = (v) => Math.floor(v / CELL) * CELL + CELL / 2;
-    out.where = { x_km: snap(it.where.x_km), y_km: snap(it.where.y_km), cell_km: CELL, text: `somewhere in this ${CELL} km square` };
-  }
-  if (it.depth_m != null) out.depth_m = Math.round(it.depth_m / 5) * 5;
-  if (it.nearest_charted_km != null) out.nearest_charted_km = Math.max(5, Math.ceil(it.nearest_charted_km / 5) * 5);
-  return out;
-};
-const blurHunt = (h) => ({ ...h, leads: (h.leads || []).map(blur) });
-const blurAll = (a) => ({ ...a, items: (a.items || []).map(blur) });
 
 const areas = [DEF, ...(existsSync(WEB) ? readdirSync(WEB, { withFileTypes: true }).filter((d) => d.isDirectory() && existsSync(join(WEB, d.name, "hunt.json"))).map((d) => d.name) : [])]
   .filter((a) => existsSync(join(a === DEF ? WEB : join(WEB, a), "hunt.json")));
@@ -72,6 +58,17 @@ for (const a of ship) {
   list.push({ key: a, name: h.area?.name || a, source: h.area?.source || "NOAA", km2: h.funnel?.[0]?.count ?? h.area?.sonar_km2 ?? null, closeups: h.funnel?.[3]?.count ?? null,
     leads: L.length, shiplike: L.filter((l) => l.verdict === "ship-like").length, maybe: L.filter((l) => l.verdict === "maybe").length,
     started: statSync(join(ROOT, "out", a)).birthtime.toISOString(), finished: h.generated_at || null });
+}
+const CONTRIB = join(ROOT, "contrib");
+for (const a of existsSync(CONTRIB) ? readdirSync(CONTRIB).filter((d) => /^[a-z_]+$/.test(d) && !ship.includes(d) && existsSync(join(CONTRIB, d, "hunt.json"))) : []) {
+  if (only && !only.includes(a)) continue;
+  cpSync(join(CONTRIB, a), join(OUT, "data", a), { recursive: true });
+  const h = JSON.parse(readFileSync(join(CONTRIB, a, "hunt.json"), "utf8")), L = h.leads || [];
+  const meta = existsSync(join(CONTRIB, a, "meta.json")) ? JSON.parse(readFileSync(join(CONTRIB, a, "meta.json"), "utf8")) : {};
+  list.push({ key: a, name: h.area?.name || meta.name || a, source: h.area?.source || "NOAA", km2: h.funnel?.[0]?.count ?? h.area?.sonar_km2 ?? null, closeups: h.funnel?.[3]?.count ?? null,
+    leads: L.length, shiplike: L.filter((l) => l.verdict === "ship-like").length, maybe: L.filter((l) => l.verdict === "maybe").length,
+    started: meta.packaged_at || h.generated_at || new Date(0).toISOString(), finished: h.generated_at || null, contributed: true });
+  ship.push(a);
 }
 mkdirSync(join(OUT, "api"), { recursive: true });
 writeFileSync(join(OUT, "api/areas.json"), JSON.stringify(list.sort((x, y) => x.started.localeCompare(y.started))));
