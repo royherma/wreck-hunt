@@ -40,28 +40,66 @@ flowchart LR
    anyone signed in; a lead needs several keeps from different people to reach the shortlist.
 6. **Leaderboard**: km² scanned, close-ups judged, finds confirmed, per person.
 
-## What is open and what is not
+## Sharing: results go straight to the board, the finder decides who sees the spot
 
-| Open to everyone (CC BY) | Kept back |
+Updated 12 Nov 2026. Replaces "one pull request per area": a PR per scan puts a maintainer
+between every contributor and the board, and that does not scale past a handful of people.
+Pull requests are for code only.
+
+```
+your computer                    coordinator (Worker + D1 + R2)          public board
+-------------                    ------------------------------          ------------
+wreck-hunt hunt <area>
+  scan + close-ups
+  recall on charted wrecks  ---> machine checks, no human:
+wreck-hunt share                   - recall >= 80% on charted wrecks
+  close-ups, sizes, scores         - same tile on a 2nd computer agrees  --> live within minutes
+  exact spot (encrypted)           - stamp: finder + time + version          close-ups, finder name,
+                                   - exact spot stored, never public        20 km square, time
+                                                                                  |
+                                                                    people vote Keep / Drop
+                                                                                  |
+                                                        shortlist --> state office + NOAA (auto)
+                                                                  --> divers / ROV the finder lets in
+```
+
+| Who | Sees | Why |
+| --- | --- | --- |
+| Everyone | Close-up, size, score, finder, time, 20 km square | Judge it, credit the finder |
+| The finder | Exact spot of their own leads | It is theirs |
+| People the finder lets in | Exact spot | A dive club or ROV team checks it |
+| State archaeologist + NOAA | Exact spot of every shortlisted lead, sent automatically | They own the wreck by law; it also makes the find official |
+| Everyone, later | Exact spot of a lead the state has confirmed and cleared for publishing | It is on the chart by then anyway |
+
+- **Credit is the reward.** The coordinator stamps finder + time when a lead first arrives, so
+  the first person to find something keeps it, even if a second computer later finds it too.
+  First-finder name stays on the lead, the leaderboard and the state report.
+- **Pay it forward.** Running `wreck-hunt share` also takes one unscanned tile from the queue and
+  scans it before your own results upload: every share leaves the map bigger for the next person.
+- **Nobody approves a scan.** Bad results are caught by the machine checks above; a worker that
+  misses charted wrecks in its tile is re-run elsewhere and its leads stay hidden.
+- **Why the spot stays off the open board:** in state waters a historic wreck belongs to the state
+  (Abandoned Shipwreck Act) and disturbing one without a permit breaks the law in Virginia and
+  Wisconsin. An open map of exact uncharted spots is the thing that gets a project like this shut
+  down. The sonar is public, so this is a speed bump, not a lock: it keeps the board from being
+  a ready-made dive map.
+
+| Open to everyone (CC BY) | Kept to finder, invited checkers, state, NOAA |
 | --- | --- |
-| Which tiles were scanned, by which version | Exact position of uncharted leads |
+| Which tiles were scanned, by which version, by whom | Exact spot of uncharted leads until the state clears it |
 | Every charted wreck the scanner found (a benchmark set) | |
-| Every close-up (shape, size, score), placed in a 20 km square | |
+| Every close-up (shape, size, score), finder, time, 20 km square | |
 | All votes and the reason for every score | |
-
-Exact positions go to state archaeologists and NOAA on request. This is a speed bump, not a
-lock: the sonar is public and anyone can run the scanner. It stops the board from being a
-ready-made dive map for looters, which is what gets a project like this shut down.
 
 ## Phases
 
 | Phase | Ships | Done when |
 | --- | --- | --- |
 | 0 | Open-source repo + public board (this repo) | A stranger runs the Sample from a clone |
-| 1 | `bin/hunt.sh <area>`: one command, resumes | A contributor adds an area by PR (board data only) |
-| 2 | Coordinator + `wreck-hunt worker` + double checking | 10 computers finish one new area |
+| 1 | `wreck-hunt hunt <area>`: one command, resumes | A stranger finishes an area with no help |
+| 2 | Coordinator + `wreck-hunt share` + machine checks + first-finder stamp | 10 computers share results with no maintainer step |
 | 3 | Shared Keep / Drop on the public board | 1,000 close-ups judged by people other than us |
-| 4 | Report path to state offices | First find confirmed by someone with a boat or an ROV |
+| 4 | Auto report to state offices + finder invites checkers | First find confirmed by someone with a boat or an ROV |
 
 ## Words on the public site
 
