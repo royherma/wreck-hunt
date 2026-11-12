@@ -36,6 +36,17 @@ for (const f of readdirSync(OUT).filter((f) => f.endsWith(".html"))) {
   writeFileSync(p, readFileSync(p, "utf8").replace(/<script src="http:\/\/127\.0\.0\.1:4800\/nav\.js"[^>]*><\/script>\n?/, ""));
 }
 
+const whole = join(OUT, "wholescan.js");
+let ws = readFileSync(whole, "utf8");
+for (const [from, to] of [
+  ['get("/api/sonar")', 'get("/data/sonar/sonar.json")'],
+  ['get("/api/sonar/z")', 'get("/data/sonar/sonar_z.bin")'],
+  ['get("/api/map")', 'get("/data/sonar/map.json")'],
+  ["`/api/sonar/img?area=${area()}`", '`/data/${!area() || area() === "chesapeake_mouth" ? "" : area() + "/"}sonar/sonar.png`'],
+  [" Double-click the seabed for sharp sonar.", ""],
+]) { if (!ws.includes(from)) throw new Error("wholescan.js changed, missing: " + from); ws = ws.replace(from, to); }
+writeFileSync(whole, ws);
+
 const tabs = join(OUT, "tabs.js");
 writeFileSync(tabs, readFileSync(tabs, "utf8").split("\n").filter((l) => !/^\s*\["(map|ev)",/.test(l)).join("\n"));
 
@@ -49,6 +60,13 @@ for (const a of ship) {
     if (e.name === "hunt.json") writeFileSync(join(dst, e.name), JSON.stringify(blurHunt(JSON.parse(raw))));
     else if (e.name === "all.json") writeFileSync(join(dst, e.name), JSON.stringify(blurAll(JSON.parse(raw))));
     else writeFileSync(join(dst, e.name), raw);
+  }
+  const sonar = join(ROOT, "out", a, "private/sonar"), base = join(ROOT, "out", a, "private/map.json");
+  if (existsSync(join(sonar, "sonar.json")) && existsSync(base)) {
+    mkdirSync(join(dst, "sonar"), { recursive: true });
+    for (const f of ["sonar.json", "sonar.png", "sonar_z.bin"]) cpSync(join(sonar, f), join(dst, "sonar", f));
+    const m = JSON.parse(readFileSync(base, "utf8"));
+    writeFileSync(join(dst, "sonar/map.json"), JSON.stringify({ ok: true, known: m.known || [], areas: m.areas || [], leads: [] }));
   }
   const h = JSON.parse(readFileSync(join(src, "hunt.json"), "utf8")), L = h.leads || [];
   list.push({ key: a, name: h.area?.name || a, source: h.area?.source || "NOAA", km2: h.funnel?.[0]?.count ?? h.area?.sonar_km2 ?? null, closeups: h.funnel?.[3]?.count ?? null,
