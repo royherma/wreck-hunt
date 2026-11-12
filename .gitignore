@@ -12,3 +12,7 @@ docs/REMAINING.md
 node_modules/
 dist/
 .wrangler/
+public/docket.html
+public/docket.css
+public/docket/
+docs/lead-research.md
