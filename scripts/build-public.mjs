@@ -70,6 +70,8 @@ for (const a of existsSync(CONTRIB) ? readdirSync(CONTRIB).filter((d) => /^[a-z_
     started: meta.packaged_at || h.generated_at || new Date(0).toISOString(), finished: h.generated_at || null, contributed: true });
   ship.push(a);
 }
+const CARDS = join(ROOT, "out/cards");
+for (const a of ship) if (existsSync(join(CARDS, a))) cpSync(join(CARDS, a), join(OUT, "cards", a), { recursive: true });
 mkdirSync(join(OUT, "api"), { recursive: true });
 writeFileSync(join(OUT, "api/areas.json"), JSON.stringify(list.sort((x, y) => x.started.localeCompare(y.started))));
 writeFileSync(join(OUT, "api/verdict.json"), "{}");
