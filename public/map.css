@@ -1,0 +1,58 @@
+html,body.mappage{height:100%;overflow:hidden}
+body.mappage{display:flex;flex-direction:column}
+#mhead{position:relative;z-index:2;display:flex;align-items:baseline;gap:14px;padding:8px 18px;background:rgba(246,249,250,.94);border-bottom:1px solid var(--line)}
+#mhead h1{font-size:26px;letter-spacing:-.03em}
+#mhead .priv{font:600 11px var(--sans);color:var(--mag);border:1px solid var(--mag);border-radius:99px;padding:1px 9px}
+.grow{flex:1}
+.back{font:600 13px var(--sans);color:var(--chart);text-decoration:underline;text-underline-offset:3px}
+#mwrap{position:relative;z-index:1;flex:1;min-height:0;display:grid;grid-template-columns:1fr 400px}
+#map{min-height:0;background:#dfeaf0}
+#side{min-height:0;display:flex;flex-direction:column;background:var(--paper);border-left:1px solid var(--line);padding:10px 14px;gap:10px;overflow:hidden}
+#legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--mute)}
+#legend span{display:flex;align-items:center;gap:5px}
+#legend .lg{margin:0}
+.lg.obs{width:8px;height:8px;border:1.5px solid var(--chart);opacity:.6;border-radius:50%;background:none}
+.lg.area{width:12px;height:9px;background:rgba(31,78,107,.15);border:1px solid rgba(31,78,107,.45)}
+#opts{display:flex;align-items:center;gap:12px;font-size:12px}
+#opts label{display:flex;gap:5px;align-items:center;cursor:pointer}
+.rl{color:var(--mute);font-size:11.5px}
+#rings{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+#rings button{font:600 11.5px var(--sans);background:#fff;border:0;border-right:1px solid var(--line);padding:3px 9px;cursor:pointer;color:var(--chart)}
+#rings button:last-child{border-right:0}
+#rings button.on{background:var(--chart);color:#fff}
+#detail{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+#detail[hidden]{display:none}
+#detail h2{margin:0;font:800 22px/1 var(--sans);letter-spacing:-.03em;display:flex;align-items:baseline;gap:8px}
+#detail h2 small{font:500 12px var(--sans);color:var(--mute);letter-spacing:0}
+#detail .hl{margin:0;color:var(--mute);font-size:12px}
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.nums div{border-top:2px solid var(--mag);padding-top:3px}
+.nums b{display:block;font:italic 500 20px/1.1 var(--num);color:var(--ink)}
+.nums span{font-size:10.5px;color:var(--mute)}
+.nn{margin:0;padding:0;list-style:none;font-size:12.5px;display:flex;flex-direction:column;gap:2px}
+.nn li{display:flex;gap:6px;align-items:baseline}
+.nn b{font:italic 500 15px var(--num);color:var(--chart);min-width:54px}
+.nn span{color:var(--mute);font-size:11px}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.acts a{font:600 12px var(--sans);padding:5px 10px;border-radius:6px;border:1px solid var(--chart);color:var(--chart);text-decoration:none;background:#fff}
+.acts a.primary{background:var(--chart);color:#fff}
+#listbox{flex:1;min-height:0;display:flex;flex-direction:column}
+.lh{font:600 12px var(--sans);margin-bottom:4px}
+#list{margin:0;padding:0;list-style:none;overflow:auto;flex:1;min-height:0}
+#list li{display:grid;grid-template-columns:54px 1fr auto;gap:8px;align-items:baseline;padding:4px 6px;border-bottom:1px solid var(--faint);cursor:pointer;font-size:12.5px}
+#list li:hover{background:var(--shoal)}
+#list li.sel{background:var(--shoal);box-shadow:inset 3px 0 0 var(--mag)}
+#list li.w{font-weight:600}
+#list li span{color:var(--mute);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#list li b{font:italic 500 15px var(--num);color:var(--chart)}
+.leaflet-tooltip.lid{font:700 12px var(--sans);color:#fff;background:var(--mag);border:0;box-shadow:none;padding:0 5px;border-radius:3px}
+.leaflet-tooltip.lid:before{display:none}
+.leaflet-tooltip.dl{font:italic 500 13px var(--num);color:var(--chart);background:rgba(255,255,255,.92);border:1px solid var(--line);box-shadow:none;padding:0 5px}
+.mk.sel{box-shadow:0 0 0 4px rgba(163,25,127,.35),0 0 0 1.5px var(--mag)}
+.dl{display:block;width:max-content;margin:0 auto;font:italic 500 13px var(--num);color:var(--chart);background:rgba(255,255,255,.92);border:1px solid var(--line);padding:0 5px;white-space:nowrap}
+#opts,#opts *{white-space:nowrap}
+#opts{gap:10px}
+#opts .grow{display:none}
+#opts{justify-content:space-between;gap:8px}
+#rings button{padding:3px 8px}
+.rl{display:none}

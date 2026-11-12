@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hunt in progress - Wreck Hunt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/map.css">
+<style>
+html{height:auto;overflow:auto}
+#bwrap{padding:12px 18px 18px;display:grid;grid-template-columns:360px minmax(0,1fr) minmax(0,1.25fr);gap:16px;align-items:start}
+#bhead{grid-column:1/4;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+#bhead h2{margin:0;font:800 28px/1.1 var(--sans);color:var(--ink);letter-spacing:-.01em}
+#bhead .live{font:600 13px var(--sans);color:var(--mag);display:flex;gap:7px;align-items:center}
+#bhead .live i{width:9px;height:9px;border-radius:50%;background:var(--mag);animation:bp 1.2s ease-in-out infinite}
+#bhead .meta{font-size:13.5px;color:var(--mute)}
+@keyframes bp{0%,100%{opacity:1}50%{opacity:.3}}
+#bsteps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--paper)}
+#bsteps li{display:grid;grid-template-columns:28px 1fr;gap:2px 10px;align-items:center;padding:9px 12px;border-top:1px solid var(--line);transition:background .3s}
+#bsteps li:first-child{border-top:0}
+#bsteps .dot{grid-row:1/3;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font:italic 600 14px var(--num);color:var(--mute);background:#fff}
+#bsteps li.d .dot{background:var(--chart);border-color:var(--chart);color:#fff}
+#bsteps li.c{background:linear-gradient(90deg,rgba(163,25,127,.07),transparent)}
+#bsteps li.c .dot{border-color:var(--mag);color:var(--mag);animation:bp 1.2s ease-in-out infinite}
+#bsteps .nm{font:600 14px var(--sans);color:var(--ink)}
+#bsteps li:not(.d):not(.c) .nm{color:var(--mute);font-weight:500}
+#bsteps .lv{grid-column:2;font:italic 500 14px var(--num);color:var(--ink)}
+#bsteps .lv:empty{display:none}
+#bsteps li.c .lv{color:var(--mag)}
+#bleft{display:flex;flex-direction:column;gap:12px}
+#bmap{margin:0;border:1px solid var(--line);background:var(--paper);padding:10px 12px}
+#bmap img{display:block;width:100%;max-height:calc(100vh - 200px);object-fit:contain;background:#f4f6f7}
+#bmap figcaption,.ghd{font:600 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:0 0 8px;display:flex;justify-content:space-between;gap:8px}
+#bmap figcaption b,.ghd b{font:italic 500 15px var(--num);color:var(--ink);text-transform:none;letter-spacing:0}
+#bgrid{border:1px solid var(--line);background:var(--paper);padding:10px 12px;max-height:calc(100vh - 150px);overflow:auto}
+#thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px}
+#thumbs figure{margin:0;position:relative;animation:fin .5s ease}
+#thumbs img{display:block;width:100%;aspect-ratio:1;border:1px solid var(--line)}
+#thumbs figcaption{font:italic 500 12px/1.2 var(--num);color:var(--ink);padding-top:2px}
+#thumbs .v{position:absolute;top:4px;left:4px;font:700 10px var(--sans);padding:1px 6px;border-radius:99px;background:#fff;border:1px solid var(--mag);color:var(--mag)}
+#thumbs .v.ship-like{background:var(--mag);color:#fff}
+#thumbs .v.unlikely{border-color:var(--line);color:var(--mute)}
+#thumbs figure.unlikely img{opacity:.55}
+@keyframes fin{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+#empty{color:var(--mute);font-size:13px;padding:20px 4px}
+.card{border:1px solid var(--line);background:var(--paper);padding:14px 16px}
+.card h3{margin:0 0 8px;font:600 11px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+#log{margin:0;padding:0;list-style:none;font:500 13px/1.6 ui-monospace,Menlo,monospace;color:var(--ink)}
+#log li span{color:var(--mute)}
+#clock{font:italic 500 30px/1 var(--num);color:var(--ink)}
+#clock small{font:500 13px var(--sans);color:var(--mute);margin-left:8px}
+#done{display:none;font:700 15px var(--sans);color:#fff;background:var(--chart);padding:12px 18px;text-decoration:none;text-align:center}
+#done.on{display:block}
+#gone{grid-column:1/3;padding:30px;border:1px dashed var(--line);color:var(--mute);font-size:15px}
+</style>
+<script src="/area.js"></script>
+<script src="http://127.0.0.1:4800/nav.js" defer></script>
+<script src="/tabs.js" defer></script>
+</head>
+<body class="lostpage">
+<header id="mhead">
+  <h1>Hunt in progress</h1>
+  <span class="priv">Updates every 4 seconds</span>
+  <span class="grow"></span>
+</header>
+<main id="bwrap">
+  <div id="bhead"><h2 id="bname">Loading</h2><span class="live" id="blive"></span><span class="meta" id="bmeta"></span></div>
+  <div id="bleft">
+    <ol id="bsteps"></ol>
+    <div class="card"><h3>Running for</h3><div id="clock">-</div></div>
+    <a id="done" href="#">Open the shortlist</a>
+    <div class="card"><h3>What the agent logged</h3><ul id="log"></ul></div>
+  </div>
+  <figure id="bmap"><figcaption><span>Sonar so far, pink dots are bumps</span><b id="mapn"></b></figcaption><img id="mapimg" alt="Sonar coverage so far with bumps marked"><div id="mapempty" class="ghd" style="text-transform:none">The map appears once the first sonar file is in.</div></figure>
+  <section id="bgrid"><div class="ghd"><span>Close-ups so far, judged ones first</span><b id="thn"></b></div><div id="thumbs"></div></section>
+</main>
+<script src="/build.js"></script>
+</body>
+</html>

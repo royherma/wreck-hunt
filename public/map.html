@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Map of everything - Wreck Hunt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/map.css">
+<script src="/area.js"></script>
+<script src="http://127.0.0.1:4800/nav.js" defer></script>
+<script src="/tabs.js" defer></script>
+</head>
+<body class="mappage">
+<header id="mhead">
+  <h1>Map of everything</h1>
+  <span class="priv">Private: exact positions stay on this Mac</span>
+  <span class="grow"></span>
+</header>
+<div id="mwrap">
+  <div id="map"></div>
+  <aside id="side">
+    <section id="legend">
+      <span><i class="lg lead"></i>Worth a look</span>
+      <span><i class="lg dia"></i>Charted wreck</span>
+      <span><i class="lg hol"></i>Old list wreck</span>
+      <span><i class="lg obs"></i>Obstruction</span>
+      <span><i class="lg area"></i>Charted area</span>
+    </section>
+    <section id="opts">
+      <label><input type="checkbox" id="oth"> Other leads</label>
+      <label><input type="checkbox" id="obs" checked> Obstructions</label>
+      <span class="grow"></span>
+      <span class="rl">Ring</span>
+      <span id="rings" role="group" aria-label="Distance ring"><button type="button" data-r="0">Off</button><button type="button" data-r="1000">1 km</button><button type="button" data-r="5000" class="on">5 km</button></span>
+    </section>
+    <section id="detail" hidden></section>
+    <section id="listbox">
+      <div class="lh">Leads by distance to nearest known wreck</div>
+      <ol id="list"></ol>
+    </section>
+  </aside>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="/map.js"></script>
+</body>
+</html>

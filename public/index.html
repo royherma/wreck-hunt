@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wreck Hunt</title>
+<meta name="description" content="A search of public NOAA seabed sonar for shipwrecks nobody has charted.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<script src="/area.js"></script>
+<script src="http://127.0.0.1:4800/nav.js" defer></script>
+<script src="/tabs.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js" defer></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<main id="app" aria-label="Wreck Hunt">
+  <section id="progress" hidden aria-label="Hunt progress"></section>
+
+  <header id="head">
+    <h1>Wreck Hunt</h1>
+    <input id="search" class="search" type="search" placeholder="Search A009, Santore, scour   /" aria-label="Search" autocomplete="off" spellcheck="false">
+    <div id="switch" role="group" aria-label="Data source"></div>
+    <p id="sub"></p>
+    <p id="meta"></p>
+  </header>
+
+  <section id="funnel" class="rise" aria-label="How the search narrows">
+    <svg id="steps" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <ol id="stages"></ol>
+  </section>
+
+  <section id="viewer" class="rise" aria-label="Selected lead in 3D">
+    <div class="neat">
+      <div id="stage3d">
+        <canvas id="gl" tabindex="0" aria-label="3D seabed relief of the selected lead. Drag to turn."></canvas>
+        <div id="title3d"></div>
+        <div id="hint">Drag to turn, right-drag to move, double-click to center.</div>
+        <div id="zoom" role="group" aria-label="Zoom"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">&minus;</button><button type="button" id="zfit">Fit</button></div>
+      </div>
+      <aside id="side">
+        <div id="map" hidden><svg id="mapsvg" aria-label="Area map. Each square is a 5 km grid cell, not a position."></svg></div>
+        <p id="where"></p>
+        <button type="button" id="spotbtn" class="spotbtn" hidden title="Private, this Mac only"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="6" width="9" height="6.5"/><path d="M4.5 6V4.2a2.5 2.5 0 0 1 5 0V6"/></svg><span>Show exact spot<small>private, this Mac only</small></span></button>
+        <a id="cmplink" class="cmplink" href="/all.html#compare=" hidden>Compare with real wrecks</a>
+        <dl id="facts"></dl>
+      </aside>
+      <div id="profile">
+        <svg id="prof" aria-label="Cross-section along the hull axis"></svg>
+      </div>
+    </div>
+    <div id="score">
+      <div id="big" tabindex="0" data-tip></div>
+      <div id="parts"></div>
+      <p id="pulled"></p>
+    </div>
+  </section>
+
+  <section id="grid" class="rise" aria-label="Leads">
+    <div id="cards"></div>
+    <a id="seeall" href="/all.html" hidden></a>
+  </section>
+
+  <section id="proof" class="rise" aria-label="Proof the scanner sees wrecks">
+    <div id="recall"></div>
+    <div id="known"></div>
+  </section>
+</main>
+<div id="tip" role="tooltip" hidden></div>
+<script type="module" src="/app.js"></script>
+</body>
+</html>

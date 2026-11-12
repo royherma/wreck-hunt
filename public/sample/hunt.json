@@ -1,0 +1,1313 @@
+{
+ "sample": true,
+ "generated_at": "2026-11-11T10:40:00+07:00",
+ "area": {
+  "name": "Chesapeake Bay mouth, Virginia",
+  "seabed_km2": 5483,
+  "sonar_km2": 2440,
+  "tiles": 116,
+  "surveys": 31,
+  "survey_years": [
+   2004,
+   2024
+  ]
+ },
+ "funnel": [
+  {
+   "stage": "Seabed mapped by sonar",
+   "count": 2440,
+   "unit": "km²"
+  },
+  {
+   "stage": "Ship-sized bumps found",
+   "count": 3011,
+   "unit": "bumps"
+  },
+  {
+   "stage": "Not on any chart",
+   "count": 2719,
+   "unit": "bumps"
+  },
+  {
+   "stage": "Shaped like a ship",
+   "count": 41,
+   "unit": "bumps"
+  },
+  {
+   "stage": "Shortlisted after a look",
+   "count": 12,
+   "unit": "leads"
+  }
+ ],
+ "charted_score_median": 10.9,
+ "recall": {
+  "charted_wrecks_visible": 143,
+  "found": 104,
+  "note": "Charted wrecks the scanner re-found, proof it can see wrecks"
+ },
+ "leads": [
+  {
+   "id": "L01",
+   "verdict": "ship-like",
+   "headline": "Long narrow hull, 6 m tall, sharp ends",
+   "depth_m": 14.6,
+   "length_m": 71,
+   "width_m": 14.2,
+   "height_m": 6.3,
+   "heading_deg": 38,
+   "max_slope_deg": 48,
+   "nearest_charted_km": 2.1,
+   "survey_year": 2016,
+   "score": 10.8,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 3,
+     "max": 3,
+     "why": "6.3 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 2,
+     "max": 2,
+     "why": "48° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 2,
+     "max": 2,
+     "why": "background bumps under 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 2,
+     "max": 2,
+     "why": "no other bumps within 160 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.8,
+     "max": 1,
+     "why": "solidity 0.8"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "5:1 length to width"
+    }
+   ],
+   "pulled_down": "Solid outline lost 0.2: the outline is broken up",
+   "heightfield": "/sample/hf/L01.json",
+   "rank": 1,
+   "where": {
+    "x_km": 47.5,
+    "y_km": 17.5,
+    "cell_km": 5,
+    "text": "about 40 km south-east of Cape Henry"
+   }
+  },
+  {
+   "id": "L02",
+   "verdict": "ship-like",
+   "headline": "Hull with a collapsed middle section",
+   "depth_m": 19.3,
+   "length_m": 58,
+   "width_m": 11.5,
+   "height_m": 4.4,
+   "heading_deg": 112,
+   "max_slope_deg": 40,
+   "nearest_charted_km": 3.4,
+   "survey_year": 2012,
+   "score": 10.5,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 3,
+     "max": 3,
+     "why": "4.4 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 2,
+     "max": 2,
+     "why": "40° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 1.7,
+     "max": 2,
+     "why": "background bumps under 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 1.9,
+     "max": 2,
+     "why": "other bumps within 140 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.9,
+     "max": 1,
+     "why": "solidity 0.9"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "5:1 length to width"
+    }
+   ],
+   "pulled_down": "Flat seabed around it lost 0.3: ripples and rocks around it add noise",
+   "heightfield": "/sample/hf/L02.json",
+   "rank": 2,
+   "where": {
+    "x_km": 52.5,
+    "y_km": 52.5,
+    "cell_km": 5,
+    "text": "about 45 km east of Cape Henry"
+   }
+  },
+  {
+   "id": "L04",
+   "verdict": "ship-like",
+   "headline": "Small steel hull with a raised stern",
+   "depth_m": 11.9,
+   "length_m": 46,
+   "width_m": 9.8,
+   "height_m": 3.6,
+   "heading_deg": 71,
+   "max_slope_deg": 35,
+   "nearest_charted_km": 4.8,
+   "survey_year": 2008,
+   "score": 9.5,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 2.7,
+     "max": 3,
+     "why": "3.6 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 1.8,
+     "max": 2,
+     "why": "35° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 1.1,
+     "max": 2,
+     "why": "background bumps up to 0.35 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 2,
+     "max": 2,
+     "why": "no other bumps within 160 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.9,
+     "max": 1,
+     "why": "solidity 0.85"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "4.7:1 length to width"
+    }
+   ],
+   "pulled_down": "Flat seabed around it lost 0.9: ripples and rocks around it add noise",
+   "heightfield": "/sample/hf/L04.json",
+   "rank": 3,
+   "where": {
+    "x_km": 72.5,
+    "y_km": 27.5,
+    "cell_km": 5,
+    "text": "about 60 km east of Cape Henry"
+   }
+  },
+  {
+   "id": "L03",
+   "verdict": "ship-like",
+   "headline": "Big hull lying on its side",
+   "depth_m": 22.8,
+   "length_m": 84,
+   "width_m": 15.8,
+   "height_m": 4.2,
+   "heading_deg": 164,
+   "max_slope_deg": 35,
+   "nearest_charted_km": 1.7,
+   "survey_year": 2019,
+   "score": 9.4,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 3,
+     "max": 3,
+     "why": "4.2 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 1.8,
+     "max": 2,
+     "why": "35° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 1.4,
+     "max": 2,
+     "why": "background bumps up to 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 1.5,
+     "max": 2,
+     "why": "other bumps within 110 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.7,
+     "max": 1,
+     "why": "solidity 0.7"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "5.3:1 length to width"
+    }
+   ],
+   "pulled_down": "Flat seabed around it lost 0.6: ripples and rocks around it add noise",
+   "heightfield": "/sample/hf/L03.json",
+   "rank": 4,
+   "where": {
+    "x_km": 37.5,
+    "y_km": 32.5,
+    "cell_km": 5,
+    "text": "about 25 km east of Cape Henry"
+   }
+  },
+  {
+   "id": "L05",
+   "verdict": "ship-like",
+   "headline": "Low hull, scattered along its length",
+   "depth_m": 25.1,
+   "length_m": 63,
+   "width_m": 12.7,
+   "height_m": 3.1,
+   "heading_deg": 8,
+   "max_slope_deg": 29,
+   "nearest_charted_km": 2.9,
+   "survey_year": 2021,
+   "score": 8,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 2.3,
+     "max": 3,
+     "why": "3.1 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 1.5,
+     "max": 2,
+     "why": "29° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 1.4,
+     "max": 2,
+     "why": "background bumps up to 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 1.2,
+     "max": 2,
+     "why": "other bumps within 90 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.6,
+     "max": 1,
+     "why": "solidity 0.6"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "5:1 length to width"
+    }
+   ],
+   "pulled_down": "Stands alone lost 0.8: other bumps sit close by",
+   "heightfield": "/sample/hf/L05.json",
+   "rank": 5,
+   "where": {
+    "x_km": 67.5,
+    "y_km": 62.5,
+    "cell_km": 5,
+    "text": "about 60 km north-east of Cape Henry"
+   }
+  },
+  {
+   "id": "L09",
+   "verdict": "ship-like",
+   "headline": "Smooth ridge, probably a sand wave",
+   "depth_m": 12.8,
+   "length_m": 74,
+   "width_m": 16,
+   "height_m": 2.3,
+   "heading_deg": 55,
+   "max_slope_deg": 17,
+   "nearest_charted_km": 3.6,
+   "survey_year": 2019,
+   "score": 7.5,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 1.7,
+     "max": 3,
+     "why": "2.3 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 0.9,
+     "max": 2,
+     "why": "17° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 1.7,
+     "max": 2,
+     "why": "background bumps under 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 1.3,
+     "max": 2,
+     "why": "other bumps within 100 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.9,
+     "max": 1,
+     "why": "solidity 0.9"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "4.6:1 length to width"
+    }
+   ],
+   "pulled_down": "Height off seabed lost 1.3: it stands under 4 m",
+   "heightfield": "/sample/hf/L09.json",
+   "rank": 6,
+   "where": {
+    "x_km": 52.5,
+    "y_km": 17.5,
+    "cell_km": 5,
+    "text": "about 45 km south-east of Cape Henry"
+   }
+  },
+  {
+   "id": "L06",
+   "verdict": "maybe",
+   "headline": "Hull-shaped, but low and rough",
+   "depth_m": 17.4,
+   "length_m": 52,
+   "width_m": 10.4,
+   "height_m": 2.6,
+   "heading_deg": 139,
+   "max_slope_deg": 27,
+   "nearest_charted_km": 6.2,
+   "survey_year": 2016,
+   "score": 6.9,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 2,
+     "max": 3,
+     "why": "2.6 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 1.4,
+     "max": 2,
+     "why": "27° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 0.9,
+     "max": 2,
+     "why": "background bumps up to 0.4 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 0.9,
+     "max": 2,
+     "why": "other bumps within 70 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.7,
+     "max": 1,
+     "why": "solidity 0.65"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "5:1 length to width"
+    }
+   ],
+   "pulled_down": "Flat seabed around it lost 1.1: ripples and rocks around it add noise",
+   "heightfield": "/sample/hf/L06.json",
+   "rank": 7,
+   "where": {
+    "x_km": 57.5,
+    "y_km": 77.5,
+    "cell_km": 5,
+    "text": "about 60 km north-east of Cape Henry"
+   }
+  },
+  {
+   "id": "L07",
+   "verdict": "maybe",
+   "headline": "Lumpy mound, fat for its length",
+   "depth_m": 21.5,
+   "length_m": 34,
+   "width_m": 18,
+   "height_m": 3.3,
+   "heading_deg": 90,
+   "max_slope_deg": 19,
+   "nearest_charted_km": 5.1,
+   "survey_year": 2012,
+   "score": 6.5,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 2.5,
+     "max": 3,
+     "why": "3.3 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 1,
+     "max": 2,
+     "why": "19° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 1.1,
+     "max": 2,
+     "why": "background bumps up to 0.35 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 1.1,
+     "max": 2,
+     "why": "other bumps within 80 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.7,
+     "max": 1,
+     "why": "solidity 0.7"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 0.1,
+     "max": 1,
+     "why": "1.9:1 length to width"
+    }
+   ],
+   "pulled_down": "Steep sides lost 1: the sides slope gently",
+   "heightfield": "/sample/hf/L07.json",
+   "rank": 8,
+   "where": {
+    "x_km": 62.5,
+    "y_km": 82.5,
+    "cell_km": 5,
+    "text": "about 70 km north-east of Cape Henry"
+   }
+  },
+  {
+   "id": "L11",
+   "verdict": "maybe",
+   "headline": "Round hump, no ship shape",
+   "depth_m": 18.7,
+   "length_m": 24,
+   "width_m": 21,
+   "height_m": 1.5,
+   "heading_deg": 0,
+   "max_slope_deg": 8,
+   "nearest_charted_km": 4,
+   "survey_year": 2008,
+   "score": 5.6,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 1.1,
+     "max": 3,
+     "why": "1.5 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 0.4,
+     "max": 2,
+     "why": "8° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 1.4,
+     "max": 2,
+     "why": "background bumps up to 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 1.6,
+     "max": 2,
+     "why": "other bumps within 120 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 1,
+     "max": 1,
+     "why": "solidity 0.95"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 0.1,
+     "max": 1,
+     "why": "1.1:1 length to width"
+    }
+   ],
+   "pulled_down": "Height off seabed lost 1.9: it stands under 4 m",
+   "heightfield": "/sample/hf/L11.json",
+   "rank": 9,
+   "where": {
+    "x_km": 52.5,
+    "y_km": 77.5,
+    "cell_km": 5,
+    "text": "about 60 km north-east of Cape Henry"
+   }
+  },
+  {
+   "id": "L08",
+   "verdict": "maybe",
+   "headline": "Rock pile with several peaks",
+   "depth_m": 16.2,
+   "length_m": 28,
+   "width_m": 22,
+   "height_m": 2.7,
+   "heading_deg": 0,
+   "max_slope_deg": 15,
+   "nearest_charted_km": 7.4,
+   "survey_year": 2004,
+   "score": 5.2,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 2,
+     "max": 3,
+     "why": "2.7 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 0.8,
+     "max": 2,
+     "why": "15° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 0.9,
+     "max": 2,
+     "why": "background bumps up to 0.4 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 0.8,
+     "max": 2,
+     "why": "other bumps within 60 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.6,
+     "max": 1,
+     "why": "solidity 0.55"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 0.1,
+     "max": 1,
+     "why": "1.3:1 length to width"
+    }
+   ],
+   "pulled_down": "Steep sides lost 1.2: the sides slope gently",
+   "heightfield": "/sample/hf/L08.json",
+   "rank": 10,
+   "where": {
+    "x_km": 32.5,
+    "y_km": 42.5,
+    "cell_km": 5,
+    "text": "about 20 km east of Cape Henry"
+   }
+  },
+  {
+   "id": "L12",
+   "verdict": "unlikely",
+   "headline": "Long low swell in the sand",
+   "depth_m": 23.9,
+   "length_m": 90,
+   "width_m": 26,
+   "height_m": 1.5,
+   "heading_deg": 120,
+   "max_slope_deg": 10,
+   "nearest_charted_km": 9.8,
+   "survey_year": 2012,
+   "score": 4.6,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 1.1,
+     "max": 3,
+     "why": "1.5 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 0.5,
+     "max": 2,
+     "why": "10° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 0.3,
+     "max": 2,
+     "why": "background bumps up to 0.5 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 1.2,
+     "max": 2,
+     "why": "other bumps within 90 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.8,
+     "max": 1,
+     "why": "solidity 0.8"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 0.7,
+     "max": 1,
+     "why": "3.5:1 length to width"
+    }
+   ],
+   "pulled_down": "Height off seabed lost 1.9: it stands under 4 m",
+   "heightfield": "/sample/hf/L12.json",
+   "rank": 11,
+   "where": {
+    "x_km": 52.5,
+    "y_km": 42.5,
+    "cell_km": 5,
+    "text": "about 40 km east of Cape Henry"
+   }
+  },
+  {
+   "id": "L10",
+   "verdict": "unlikely",
+   "headline": "Broad spread of boulders",
+   "depth_m": 28.4,
+   "length_m": 40,
+   "width_m": 31,
+   "height_m": 1.8,
+   "heading_deg": 0,
+   "max_slope_deg": 11,
+   "nearest_charted_km": 8.9,
+   "survey_year": 2021,
+   "score": 3.7,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 1.4,
+     "max": 3,
+     "why": "1.8 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 0.6,
+     "max": 2,
+     "why": "11° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 0.6,
+     "max": 2,
+     "why": "background bumps up to 0.45 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 0.5,
+     "max": 2,
+     "why": "other bumps within 40 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.5,
+     "max": 1,
+     "why": "solidity 0.5"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 0.1,
+     "max": 1,
+     "why": "1.3:1 length to width"
+    }
+   ],
+   "pulled_down": "Height off seabed lost 1.6: it stands under 4 m",
+   "heightfield": "/sample/hf/L10.json",
+   "rank": 12,
+   "where": {
+    "x_km": 32.5,
+    "y_km": 47.5,
+    "cell_km": 5,
+    "text": "about 25 km north-east of Cape Henry"
+   }
+  }
+ ],
+ "known": [
+  {
+   "id": "K01",
+   "verdict": "charted",
+   "headline": "Charted steamer, found again",
+   "depth_m": 16.1,
+   "length_m": 78,
+   "width_m": 13.5,
+   "height_m": 6.6,
+   "heading_deg": 25,
+   "max_slope_deg": 51,
+   "nearest_charted_km": 0,
+   "survey_year": 2016,
+   "score": 10.9,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 3,
+     "max": 3,
+     "why": "6.6 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 2,
+     "max": 2,
+     "why": "51° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 2,
+     "max": 2,
+     "why": "background bumps under 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 2,
+     "max": 2,
+     "why": "no other bumps within 160 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.9,
+     "max": 1,
+     "why": "solidity 0.9"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "5.8:1 length to width"
+    }
+   ],
+   "pulled_down": "Solid outline lost 0.1: the outline is broken up",
+   "heightfield": "/sample/hf/K01.json",
+   "rank": 1,
+   "name": "charted wreck",
+   "where": {
+    "x_km": 67.5,
+    "y_km": 37.5,
+    "cell_km": 5,
+    "text": "about 55 km east of Cape Henry"
+   },
+   "chart_category": "dangerous wreck",
+   "chart_note": "Reported by a pilot, position approximate",
+   "charted_year": 1964,
+   "vessel": null
+  },
+  {
+   "id": "K02",
+   "verdict": "charted",
+   "headline": "Charted freighter, found again",
+   "depth_m": 20.4,
+   "length_m": 62,
+   "width_m": 12,
+   "height_m": 5.3,
+   "heading_deg": 101,
+   "max_slope_deg": 43,
+   "nearest_charted_km": 0,
+   "survey_year": 2012,
+   "score": 10.9,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 3,
+     "max": 3,
+     "why": "5.3 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 2,
+     "max": 2,
+     "why": "43° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 2,
+     "max": 2,
+     "why": "background bumps under 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 2,
+     "max": 2,
+     "why": "no other bumps within 160 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.9,
+     "max": 1,
+     "why": "solidity 0.85"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "5.2:1 length to width"
+    }
+   ],
+   "pulled_down": "Solid outline lost 0.1: the outline is broken up",
+   "heightfield": "/sample/hf/K02.json",
+   "rank": 2,
+   "name": "charted wreck",
+   "where": {
+    "x_km": 67.5,
+    "y_km": 52.5,
+    "cell_km": 5,
+    "text": "about 60 km east of Cape Henry"
+   },
+   "chart_category": "hull showing",
+   "chart_note": null,
+   "charted_year": null,
+   "vessel": {
+    "name": "Example steamer",
+    "sunk": 1918,
+    "story": "Lost in a storm while carrying coal."
+   }
+  },
+  {
+   "id": "K03",
+   "verdict": "charted",
+   "headline": "Charted tug, found again",
+   "depth_m": 13.2,
+   "length_m": 49,
+   "width_m": 10.1,
+   "height_m": 4.4,
+   "heading_deg": 148,
+   "max_slope_deg": 40,
+   "nearest_charted_km": 0,
+   "survey_year": 2019,
+   "score": 10.9,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 3,
+     "max": 3,
+     "why": "4.4 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 2,
+     "max": 2,
+     "why": "40° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 2,
+     "max": 2,
+     "why": "background bumps under 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 2,
+     "max": 2,
+     "why": "no other bumps within 160 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.9,
+     "max": 1,
+     "why": "solidity 0.9"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "4.9:1 length to width"
+    }
+   ],
+   "pulled_down": "Solid outline lost 0.1: the outline is broken up",
+   "heightfield": "/sample/hf/K03.json",
+   "rank": 3,
+   "name": "charted wreck",
+   "where": {
+    "x_km": 42.5,
+    "y_km": 47.5,
+    "cell_km": 5,
+    "text": "about 35 km east of Cape Henry"
+   },
+   "chart_category": "wreck, depth known",
+   "chart_note": null,
+   "charted_year": 1987,
+   "vessel": null
+  },
+  {
+   "id": "K04",
+   "verdict": "charted",
+   "headline": "Charted tanker, found again",
+   "depth_m": 24.7,
+   "length_m": 92,
+   "width_m": 16.4,
+   "height_m": 7.2,
+   "heading_deg": 63,
+   "max_slope_deg": 52,
+   "nearest_charted_km": 0,
+   "survey_year": 2021,
+   "score": 10.9,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 3,
+     "max": 3,
+     "why": "7.2 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 2,
+     "max": 2,
+     "why": "52° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 2,
+     "max": 2,
+     "why": "background bumps under 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 2,
+     "max": 2,
+     "why": "no other bumps within 160 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.9,
+     "max": 1,
+     "why": "solidity 0.9"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "5.6:1 length to width"
+    }
+   ],
+   "pulled_down": "Solid outline lost 0.1: the outline is broken up",
+   "heightfield": "/sample/hf/K04.json",
+   "rank": 4,
+   "name": "charted wreck",
+   "where": {
+    "x_km": 62.5,
+    "y_km": 47.5,
+    "cell_km": 5,
+    "text": "about 55 km east of Cape Henry"
+   },
+   "chart_category": "dangerous wreck",
+   "chart_note": "Foul ground, fishing gear snags",
+   "charted_year": 1951,
+   "vessel": null
+  },
+  {
+   "id": "K05",
+   "verdict": "charted",
+   "headline": "Charted schooner, found again",
+   "depth_m": 18.1,
+   "length_m": 55,
+   "width_m": 11,
+   "height_m": 4.7,
+   "heading_deg": 5,
+   "max_slope_deg": 37,
+   "nearest_charted_km": 0,
+   "survey_year": 2008,
+   "score": 10.8,
+   "score_max": 11,
+   "score_parts": [
+    {
+     "name": "Height off seabed",
+     "value": 3,
+     "max": 3,
+     "why": "4.7 m, full marks at 4 m+"
+    },
+    {
+     "name": "Steep sides",
+     "value": 1.9,
+     "max": 2,
+     "why": "37° max slope"
+    },
+    {
+     "name": "Flat seabed around it",
+     "value": 2,
+     "max": 2,
+     "why": "background bumps under 0.3 m"
+    },
+    {
+     "name": "Stands alone",
+     "value": 2,
+     "max": 2,
+     "why": "no other bumps within 160 m"
+    },
+    {
+     "name": "Solid outline",
+     "value": 0.9,
+     "max": 1,
+     "why": "solidity 0.88"
+    },
+    {
+     "name": "Ship proportions",
+     "value": 1,
+     "max": 1,
+     "why": "5:1 length to width"
+    }
+   ],
+   "pulled_down": "Steep sides lost 0.1: the sides slope gently",
+   "heightfield": "/sample/hf/K05.json",
+   "rank": 5,
+   "name": "charted wreck",
+   "where": {
+    "x_km": 67.5,
+    "y_km": 72.5,
+    "cell_km": 5,
+    "text": "about 65 km north-east of Cape Henry"
+   },
+   "chart_category": "wreck, depth unknown",
+   "chart_note": null,
+   "charted_year": 2003,
+   "vessel": null
+  }
+ ],
+ "progress": {
+  "state": "running",
+  "updated_at": "2026-11-11T11:08:00+07:00",
+  "eta_min": 4,
+  "steps": [
+   {
+    "name": "Map the seabed",
+    "state": "done",
+    "done": 116,
+    "total": 116,
+    "unit": "tiles"
+   },
+   {
+    "name": "Find bumps",
+    "state": "done",
+    "done": 116,
+    "total": 116,
+    "unit": "tiles"
+   },
+   {
+    "name": "Check the chart",
+    "state": "done",
+    "done": 3011,
+    "total": 3011,
+    "unit": "bumps"
+   },
+   {
+    "name": "Check the shape",
+    "state": "done",
+    "done": 2719,
+    "total": 2719,
+    "unit": "bumps"
+   },
+   {
+    "name": "Close-up look",
+    "state": "running",
+    "done": 558,
+    "total": 600,
+    "unit": "bumps"
+   },
+   {
+    "name": "Rank the leads",
+    "state": "todo",
+    "done": 0,
+    "total": 12,
+    "unit": "leads"
+   }
+  ]
+ },
+ "map": {
+  "w_km": 80,
+  "h_km": 89,
+  "locator": {
+   "lon": -76,
+   "lat": 37
+  },
+  "land": [
+   [
+    [
+     0,
+     89
+    ],
+    [
+     18,
+     89
+    ],
+    [
+     22,
+     78
+    ],
+    [
+     17,
+     66
+    ],
+    [
+     10,
+     58
+    ],
+    [
+     3,
+     53
+    ],
+    [
+     0,
+     52
+    ]
+   ],
+   [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     36
+    ],
+    [
+     6,
+     38
+    ],
+    [
+     11,
+     37
+    ],
+    [
+     16,
+     30
+    ],
+    [
+     21,
+     22
+    ],
+    [
+     25,
+     12
+    ],
+    [
+     31,
+     0
+    ]
+   ]
+  ],
+  "places": [
+   {
+    "name": "Cape Charles",
+    "x": 5,
+    "y": 56
+   },
+   {
+    "name": "Cape Henry",
+    "x": 12,
+    "y": 40
+   },
+   {
+    "name": "Virginia Beach",
+    "x": 3,
+    "y": 18
+   }
+  ],
+  "sonar": [
+   [
+    [
+     28,
+     10
+    ],
+    [
+     76,
+     10
+    ],
+    [
+     76,
+     50
+    ],
+    [
+     28,
+     50
+    ]
+   ],
+   [
+    [
+     30,
+     58
+    ],
+    [
+     70,
+     58
+    ],
+    [
+     70,
+     82
+    ],
+    [
+     30,
+     82
+    ]
+   ]
+  ]
+ }
+}

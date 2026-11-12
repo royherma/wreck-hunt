@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lost ships - Wreck Hunt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/map.css">
+<style>
+html{height:auto;overflow:auto}
+body.lostpage{min-height:0}
+#lwrap{padding:14px 18px 24px;display:flex;flex-direction:column;gap:12px}
+#lsub{font-size:14px;color:var(--mute);max-width:980px}
+#lsub b{color:var(--ink)}
+#ships{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+.ship{background:var(--paper);border:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.ship.unf{border-color:var(--mag);box-shadow:inset 3px 0 0 var(--mag)}
+.ship h3{margin:0;font:700 16px/1.2 var(--sans);color:var(--ink);display:flex;gap:8px;align-items:baseline}
+.ship h3 .y{font:italic 500 15px var(--num);color:var(--mute)}
+.ship .facts{font-size:12.5px;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 12px}
+.ship .facts i{font:italic 500 14px var(--num);color:var(--ink)}
+.ship .story{font-size:13px;line-height:1.45;color:var(--ink)}
+.ship .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px}
+.pill{font:600 11px var(--sans);border-radius:99px;padding:2px 9px;border:1px solid var(--chart);color:var(--chart)}
+.pill.unf{border-color:var(--mag);color:#fff;background:var(--mag)}
+.fit{font:600 12px var(--sans);color:var(--mag)}
+.fit a{color:var(--mag)}
+.ship a.src{color:var(--mute);font-size:11.5px;text-decoration:underline;text-underline-offset:2px}
+#none{font-size:15px;padding:30px;border:1px dashed var(--line);color:var(--mute)}
+</style>
+<script src="/area.js"></script>
+<script src="http://127.0.0.1:4800/nav.js" defer></script>
+<script src="/tabs.js" defer></script>
+</head>
+<body class="lostpage">
+<header id="mhead">
+  <h1>Lost ships</h1>
+  <span class="priv">Finding is legal, disturbing is not: report finds to the state</span>
+  <span class="grow"></span>
+</header>
+<main id="lwrap">
+  <p id="lsub"></p>
+  <div id="ships"></div>
+</main>
+<script src="/lost.js"></script>
+</body>
+</html>

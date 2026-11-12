@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+data/
+out/
+.claude/
+.playwright-mcp/
+docs/REMAINING.md
+*.log
+*.pid
+*.bak*
+.DS_Store
+node_modules/

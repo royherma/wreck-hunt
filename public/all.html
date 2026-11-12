@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>All close-ups - Wreck Hunt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500;1,6..72,600&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/all.css">
+<script src="/area.js"></script>
+<script src="http://127.0.0.1:4800/nav.js" defer></script>
+<script src="/tabs.js" defer></script>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body class="allpage">
+<canvas id="bg" aria-hidden="true"></canvas>
+<main id="gridview">
+  <header id="top">
+    <div class="row1">
+      <h1>All close-ups</h1>
+      <p id="tally" aria-live="polite"></p>
+      <button type="button" id="cmpgo" class="btn primary cmpgo">Compare finds with real wrecks</button>
+    </div>
+    <div id="filters"></div>
+    <div id="simbar" hidden></div>
+  </header>
+  <div id="wall" aria-label="Every close-up"></div>
+  <p id="empty" hidden>Nothing matches these filters</p>
+</main>
+
+<section id="detail" hidden aria-label="Close-up">
+  <div class="dleft">
+    <div class="dbar">
+      <button type="button" id="dback" class="btn">Back <span class="k">Esc</span></button>
+      <span id="dpos"></span>
+      <button type="button" id="dcmp" class="btn" aria-pressed="false">Add to compare <span class="k">C</span></button>
+      <button type="button" id="dsim" class="btn">Find similar</button>
+      <span class="grow"></span>
+      <button type="button" id="dprev" class="btn" aria-label="Previous">Previous <span class="k">&larr;</span></button>
+      <button type="button" id="dnext" class="btn" aria-label="Next">Next <span class="k">&rarr;</span></button>
+    </div>
+    <div class="neat">
+      <div id="stage3d">
+        <canvas id="gl" tabindex="0" aria-label="3D seabed relief. Drag to turn, right-drag to move, double-click to center."></canvas>
+        <div id="title3d"></div>
+        <div id="hint">Drag to turn, right-drag to move, double-click to center.</div>
+        <div id="zoom" role="group" aria-label="Zoom"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">&minus;</button><button type="button" id="zfit">Fit</button></div>
+      </div>
+      <div id="profile"><svg id="prof" aria-label="Cross-section along the hull axis"></svg></div>
+    </div>
+  </div>
+  <aside class="dright">
+    <h2 id="dhead"></h2>
+    <p id="dsub"></p>
+    <button type="button" id="spotbtn" class="spotbtn" title="Private, this Mac only"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="6" width="9" height="6.5"/><path d="M4.5 6V4.2a2.5 2.5 0 0 1 5 0V6"/></svg><span>Show exact spot<small>private, this Mac only</small></span></button>
+    <dl id="dfacts"></dl>
+    <div id="decide" role="group" aria-label="Your verdict">
+      <button type="button" data-v="keep"><b>Keep</b><span class="k">K</span></button>
+      <button type="button" data-v="drop"><b>Drop</b><span class="k">X</span></button>
+      <button type="button" data-v="unsure"><b>Unsure</b><span class="k">U</span></button>
+    </div>
+    <textarea id="note" rows="2" maxlength="500" placeholder="Add a note, it saves with your verdict" aria-label="Note"></textarea>
+    <p id="savemsg" aria-live="polite"></p>
+    <div id="dscore"><div id="dtotal" tabindex="0"></div><div id="dparts"></div></div>
+    <p id="dpulled"></p>
+    <div id="did"></div>
+  </aside>
+</section>
+<div id="tray" hidden></div>
+<section id="cmpview" hidden aria-label="Compare">
+  <div class="cbar">
+    <h2 id="cn">Compare</h2>
+    <div class="fg"><span>Size</span><div class="seg" id="csize"><button type="button" class="chip" data-v="true">True size</button><button type="button" class="chip" data-v="match">Match size</button></div></div>
+    <div class="fg"><span>Height stretch</span><div class="seg" id="cstretch"><button type="button" class="chip" data-v="1">True</button><button type="button" class="chip" data-v="3">x3</button><button type="button" class="chip" data-v="6">x6</button><button type="button" class="chip" data-v="0">Fit</button></div></div>
+    <div class="fg"><span>Zoom</span><div class="seg" id="czoom"><button type="button" class="chip" data-z="in" aria-label="Zoom in">+</button><button type="button" class="chip" data-z="out" aria-label="Zoom out">&minus;</button><button type="button" class="chip" data-z="fit">Fit</button></div><i id="zval">1.0x</i></div>
+    <span class="grow"></span>
+    <button type="button" id="cclose" class="btn">Back <span class="k">Esc</span></button>
+  </div>
+  <div id="cpick"></div>
+  <div id="cempty" hidden><b>Nothing picked yet</b><span>Tick real wrecks and possible finds above, or press All on a row, to lay them side by side.</span></div>
+  <div class="cp" id="cside"><h3>Side by side, same scale, hull axis across <span class="seg" id="caround" title="How much seabed to show around each one"><button type="button" class="chip" data-v="0">Close-up</button><button type="button" class="chip" data-v="250">250 m</button><button type="button" class="chip" data-v="500">500 m</button><button type="button" class="chip" data-v="1000">1 km</button><button type="button" class="chip" data-v="whole">Whole scan</button></span><span class="seg" id="clay"><button type="button" class="chip" data-v="row">Side by side</button><button type="button" class="chip" data-v="stack">Stacked</button></span><button type="button" class="chip" id="cmapb">Map</button><span class="seg" id="cview"><button type="button" class="chip" data-v="pics">Pictures</button><button type="button" class="chip" data-v="3d">3D</button></span></h3><div id="tiles"></div><div id="c3d" hidden><canvas id="c3dc"></canvas><div id="c3dl"></div><div id="c3dmap" hidden></div><div id="c3dw" hidden></div><p id="c3dh">Drag to turn, W A S D or arrows to move, Q E to turn, scroll to zoom. Click a name to hide it, double-click to open it.</p></div></div>
+  <div class="cp" id="cstack"><h3>Stacked outlines, centred</h3><canvas id="stackc"></canvas><div id="clegend"></div></div>
+  <div class="cp" id="cprof"><h3>Profiles along the hull <span id="pnote"></span><span id="plegend"></span></h3><svg id="profc"></svg></div>
+  <div class="cp" id="cfacts"><h3>Facts</h3><table id="ctable"></table></div>
+</section>
+<script type="module" src="/all.js"></script>
+</body>
+</html>

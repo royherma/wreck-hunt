@@ -1,0 +1,14 @@
+{
+  "name": "wreck-hunt",
+  "version": "0.1.0",
+  "description": "Find uncharted shipwreck leads in public NOAA sonar",
+  "type": "module",
+  "license": "MIT",
+  "author": "Techguyver Labs <oss@techguyverlabs.org>",
+  "scripts": {
+    "start": "node server.mjs",
+    "sample": "node public/sample/make-sample.mjs",
+    "build:public": "node scripts/build-public.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
