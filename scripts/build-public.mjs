@@ -58,8 +58,7 @@ for (const a of ship) {
 mkdirSync(join(OUT, "api"), { recursive: true });
 writeFileSync(join(OUT, "api/areas.json"), JSON.stringify(list.sort((x, y) => x.started.localeCompare(y.started))));
 writeFileSync(join(OUT, "api/verdict.json"), "{}");
-writeFileSync(join(OUT, "api/none.json"), JSON.stringify({ ok: false, public: true }));
-writeFileSync(join(OUT, "_redirects"), ["/api/areas /api/areas.json 200", "/api/verdict /api/verdict.json 200", "/api/* /api/none.json 404"].join("\n") + "\n");
+writeFileSync(join(OUT, "_redirects"), ["/api/areas /api/areas.json 200", "/api/verdict /api/verdict.json 200"].join("\n") + "\n");
 writeFileSync(join(OUT, "404.html"), "<!doctype html><meta charset=utf-8><title>Not found</title><p>Not found. <a href=\"/\">Wreck Hunt</a></p>");
 
 let files = 0, bytes = 0, big = [];

@@ -83,7 +83,7 @@ historic preservation office or NOAA, not to the internet.
 
 ```sh
 npm run build:public      # writes dist/: pages + board data, no private folders
-npx wrangler pages deploy dist --project-name wreck-hunt
+npx wrangler deploy          # wrangler.toml: static assets from dist/, custom domain
 ```
 
 The build drops the local-only pages (map, live build, case files), puts every uncharted

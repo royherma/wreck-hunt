@@ -1,3 +1,8 @@
 name = "wreck-hunt"
-pages_build_output_dir = "dist"
 compatibility_date = "2026-05-01"
+routes = [{ pattern = "wreckhunt.techguyverlabs.org", custom_domain = true }]
+
+[assets]
+directory = "./dist"
+not_found_handling = "404-page"
+html_handling = "auto-trailing-slash"
