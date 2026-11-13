@@ -3,12 +3,12 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { G, VERT, FRAG, resample } from "/lib.js";
 import { keyStep, useKeys } from "/keys3d.js";
 
-const FRAG3 = "uniform vec3 uLine; uniform float uRad, uStack, uFi, uHole, uNoLine, uMark;\n" + FRAG
-  .replace("float fade = 1.0 - smoothstep(uR0, min(uR0 + 0.43, 1.0), r);", "float fade = 1.0 - smoothstep(uRad * uFi, uRad, length(vP.xz));")
+const FRAG3 = "uniform vec3 uLine; uniform vec2 uCs; uniform float uRad, uStack, uFi, uHole, uNoLine, uMark, uLane, uLen;\n" + FRAG
+  .replace("float fade = 1.0 - smoothstep(uR0, min(uR0 + 0.43, 1.0), r);", "float fade = 1.0 - smoothstep(uRad * uFi, uRad, length(vP.xz));\n  vec2 q = vec2(dot(vP.xz, uCs), dot(vP.xz, vec2(-uCs.y, uCs.x)));\n  if (uLane > 0.0) { if (abs(q.x) > uLane) discard; fade = min(fade, 1.0 - smoothstep(uLen * 0.8, uLen, abs(q.y))); }")
   .replace("col = mix(col, vec3(0.639, 0.098, 0.498), line * on * 0.9);", "col = mix(col, uLine, line * on * 0.9);")
   .replace("if (fade <= 0.001) discard;", "if (fade <= 0.001) discard;\n  if (uStack > 0.5 && vH < 0.3) discard;\n  if (length(vP.xz) < uHole) discard;")
   .replace("float on = smoothstep(0.3, 0.55, vH);", "float on = smoothstep(0.3, 0.55, vH) * (1.0 - uNoLine);")
-  .replace("gl_FragColor = vec4(col, a);", "if (uStack > 0.5) { col = mix(col, uLine, 0.5); a *= 0.6; }\n  if (uMark > 0.5) { float rr = abs(length(vP.xz) - uMark); col = mix(col, uLine, (1.0 - smoothstep(0.0, 1.5 * fwidth(length(vP.xz)) + 0.3, rr)) * 0.85); }\n  gl_FragColor = vec4(col, a);");
+  .replace("gl_FragColor = vec4(col, a);", "if (uStack > 0.5) { col = mix(col, uLine, 0.5); a *= 0.6; }\n  if (uLane > 0.0) { float e = uLane - abs(q.x); col = mix(col, vec3(1.0), (1.0 - smoothstep(0.0, 1.5 * fwidth(e) + 0.4, e)) * 0.7); }\n  if (uMark > 0.5) { float rr = abs(length(vP.xz) - uMark); col = mix(col, uLine, (1.0 - smoothstep(0.0, 1.5 * fwidth(length(vP.xz)) + 0.3, rr)) * 0.85); }\n  gl_FragColor = vec4(col, a);");
 
 let R = null;
 const known = (it) => it.group === "charted";
@@ -78,7 +78,7 @@ export function hide3d() {
   if (R) R.on = false;
 }
 
-export function show3d({ canvas, layer, items, cols, hfs, cens, stretch, label, tag, onOpen, stack, match, reserve = 0, wides = null }) {
+export function show3d({ canvas, layer, items, cols, hfs, cens, stretch, label, tag, onOpen, stack, match, reserve = 0, wides = null, lane = false }) {
   if (!R) init(canvas, layer);
   R.on = true;
   R.size();
@@ -87,11 +87,11 @@ export function show3d({ canvas, layer, items, cols, hfs, cens, stretch, label, 
   const sizes = items.map((it) => { const h = hfs.get(it.id); return Math.max(h.w, h.h) * (h.cell_m || 4); });
   const wd = items.map((it) => wides?.get(it.id) || null);
   const wsz = wd.map((h) => (h ? Math.max(h.w, h.h) * (h.cell_m || 4) : 0));
-  const sig = items.map((x) => x.id).join(",") + "|" + wsz.join(",") + "|" + ex + "|" + cols.join(",") + "|" + stack + "|" + match;
+  const sig = items.map((x) => x.id).join(",") + "|" + wsz.join(",") + "|" + ex + "|" + cols.join(",") + "|" + stack + "|" + match + "|" + lane;
   if (sig === R.sig) return;
   R.sig = sig;
   clear();
-  const rad = items.map((it, i) => (wd[i] ? wsz[i] / 2 : (it.length_m || 40) / 2 + 9));
+  const rad = items.map((it, i) => (wd[i] && !lane ? wsz[i] / 2 : (it.length_m || 40) / 2 + 9));
   const maxL = Math.max(...items.map((it) => it.length_m || 40));
   const k = items.map((it) => (match ? maxL / (it.length_m || 40) : 1));
   const gap = Math.max(...rad.map((r, i) => r * k[i])) * 2 + 2;
@@ -105,6 +105,7 @@ export function show3d({ canvas, layer, items, cols, hfs, cens, stretch, label, 
       uA: { value: tex }, uB: { value: tex }, uMix: { value: 1 }, uEx: { value: ex }, uSize: { value: Math.max(hf.w, hf.h) * (hf.cell_m || 4) },
       uR0: { value: 0.5 }, uSweep: { value: 2 }, uLine: { value: new THREE.Vector3(col.r, col.g, col.b) }, uStack: { value: stack ? 1 : 0 },
       uRad: { value: u.rad }, uFi: { value: u.fi }, uHole: { value: u.hole || 0 }, uNoLine: { value: u.noLine || 0 }, uMark: { value: u.mark || 0 },
+      uLane: { value: u.lane || 0 }, uLen: { value: u.len || 0 }, uCs: { value: new THREE.Vector2(...(u.cs || [1, 0])) },
     };
     const mesh = new THREE.Mesh(R.geo, new THREE.ShaderMaterial({ uniforms, vertexShader: VERT, fragmentShader: FRAG3, transparent: true, side: THREE.DoubleSide }));
     mesh.frustumCulled = false;
@@ -117,6 +118,7 @@ export function show3d({ canvas, layer, items, cols, hfs, cens, stretch, label, 
     const size = sizes[i], col = new THREE.Color(cols[i]), w = wd[i];
     const inner = size / 2 * 0.96;
     const near = mk(hf, col, w ? { rad: inner, fi: 0.97 } : { rad: Math.min(rad[i], size / 2), fi: 0.72 });
+    const ln = lane && w ? gap / 2 / k[i] : 0;
     near.mesh.renderOrder = known(it) ? 1 : 2;
     const mx = (c.cx / (hf.w - 1) - 0.5) * size, mz = (c.cy / (hf.h - 1) - 0.5) * size;
     const spin = new THREE.Group();
@@ -132,7 +134,7 @@ export function show3d({ canvas, layer, items, cols, hfs, cens, stretch, label, 
         dn += at(hf, c.cx + ox / cell, c.cy + oz / cell);
       }
       const off = (dw - dn) / 24;
-      const far = mk({ ...w, z: w.z.map((v) => v - off) }, col, { rad: wsz[i] / 2, fi: 0.95, hole: inner * 0.985, noLine: 1, mark: inner });
+      const far = mk({ ...w, z: w.z.map((v) => v - off) }, col, ln ? { rad: 1e6, fi: 0.95, hole: inner * 0.985, noLine: 1, mark: inner, lane: ln, len: wsz[i] / 2 - ln, cs: [Math.cos(spin.rotation.y), Math.sin(spin.rotation.y)] } : { rad: wsz[i] / 2, fi: 0.95, hole: inner * 0.985, noLine: 1, mark: inner });
       far.mesh.renderOrder = 0;
       spin.add(far.mesh);
       extra.push(far);
@@ -155,7 +157,7 @@ export function show3d({ canvas, layer, items, cols, hfs, cens, stretch, label, 
     R.layer.append(el);
     R.groups.push({ obj, mesh, tex, extra, label: el, front: rad[i] * 0.8 * k[i], fixed: !!stack });
   });
-  const key = items.map((x) => x.id).join(",") + wsz.join(",") + stack + match + reserve;
+  const key = items.map((x) => x.id).join(",") + (lane ? "" : wsz.join(",")) + stack + match + reserve;
   if (key !== R.key) {
     R.key = key;
     const span = stack ? gap : (items.length - 1) * gap + gap;

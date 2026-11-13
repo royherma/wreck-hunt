@@ -2,7 +2,6 @@ import { f1, sc } from "/lib.js";
 import { centreOf, frame, paintField, contourSegs, profile } from "/shape.js";
 import { show3d, hide3d, fit3d } from "/cmp3d.js";
 import { drawMap } from "/cmpmap.js";
-import { showWhole, hideWhole } from "/wholescan.js";
 import { shareUrl, copyShare } from "/share.js";
 
 const $ = (s) => document.querySelector(s);
@@ -124,28 +123,26 @@ function render() {
   $("#tiles").hidden = d3;
   $("#c3d").hidden = !d3;
   $("#cmpview").classList.toggle("v3d", d3);
-  const whole = d3 && st.around === "whole";
-  $("#cmpview").classList.toggle("vwhole", whole);
-  if (whole) { hide3d(); showWhole({ host: $("#c3dw"), items, cols, label: st.ctx.label, onOpen: st.ctx.open, stretch: st.stretch, note: (t) => { $("#c3dh").textContent = t; } }); }
-  else hideWhole();
-  if (d3 && !whole) { if (st.around) loadWide(items).then(() => st.open && st.view === "3d" && go3d(st.items, colorsFor(st.items))); go3d(items, cols); }
-  else if (!d3) { hide3d(); tiles(items, cols); }
-  $("#c3dmap").hidden = !(d3 && st.map && !whole);
-  if (d3 && st.map && !whole) drawMap($("#c3dmap"), items, cols, st.ctx.label);
+  if (d3) { if (st.around) loadWide(items).then(() => st.open && st.view === "3d" && go3d(st.items, colorsFor(st.items))); go3d(items, cols); }
+  else { hide3d(); tiles(items, cols); }
+  $("#c3dmap").hidden = !(d3 && st.map);
+  if (d3 && st.map) drawMap($("#c3dmap"), items, cols, st.ctx.label);
   stack(items, cols);
   profiles(items, cols);
   facts(items, cols);
 }
 
+const spanOf = () => (st.around === "whole" ? 1000 : st.around);
 function go3d(items, cols) {
-  const wides = new Map(items.map((it) => [it.id, st.around ? st.wide.get(it.id + "_" + st.around) || null : null]));
+  const whole = st.around === "whole";
+  const wides = new Map(items.map((it) => [it.id, st.around ? st.wide.get(it.id + "_" + spanOf()) || null : null]));
   const n = [...wides.values()].filter(Boolean).length;
-  $("#c3dh").textContent = st.lay === "stack" && st.around ? "Stacked shows the close-ups only. Switch to Side by side to see the seabed around each one." : st.around && n < items.length ? `Cutting ${st.around >= 1000 ? "1 km" : st.around + " m"} of sonar around each one, ${n} of ${items.length} ready` : st.around ? "Sharp close-up inside the ring, wider sonar around it. W A S D or arrows to move, Q E to turn, scroll to zoom." : "Drag to turn, W A S D or arrows to move, Q E to turn, scroll to zoom. Click a name to hide it, double-click to open it.";
-  show3d({ canvas: $("#c3dc"), layer: $("#c3dl"), items, cols, hfs: st.hfs, cens: st.cen, stretch: st.stretch, label: st.ctx.label, tag: TAG, onOpen: st.ctx.open, stack: st.lay === "stack", match: st.mode === "match", reserve: st.map ? 396 : 0, wides: n === items.length && st.lay !== "stack" ? wides : null });
+  $("#c3dh").textContent = st.lay === "stack" && st.around ? "Stacked shows the close-ups only. Switch to Side by side to see the seabed around each one." : st.around && n < items.length ? `Cutting ${whole ? "the seabed" : st.around >= 1000 ? "1 km" : st.around + " m"} around each one, ${n} of ${items.length} ready` : whole ? "Same view, seabed filled in around each one out to its neighbours. Scroll out to see more. W A S D or arrows to move, Q E to turn." : st.around ? "Sharp close-up inside the ring, wider sonar around it. W A S D or arrows to move, Q E to turn, scroll to zoom." : "Drag to turn, W A S D or arrows to move, Q E to turn, scroll to zoom. Click a name to hide it, double-click to open it.";
+  show3d({ canvas: $("#c3dc"), layer: $("#c3dl"), items, cols, hfs: st.hfs, cens: st.cen, stretch: st.stretch, label: st.ctx.label, tag: TAG, onOpen: st.ctx.open, stack: st.lay === "stack", match: st.mode === "match", reserve: st.map ? 396 : 0, wides: n === items.length && st.lay !== "stack" ? wides : null, lane: whole });
 }
 
 async function loadWide(items) {
-  const span = st.around;
+  const span = spanOf();
   await Promise.all(items.filter((it) => !st.wide.has(it.id + "_" + span)).map(async (it) => {
     const r = await fetch(`/api/patch?id=${it.id}&span=${span}`, { cache: "no-store" }).catch(() => null);
     st.wide.set(it.id + "_" + span, r && r.ok ? await r.json() : null);

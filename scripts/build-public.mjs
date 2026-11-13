@@ -22,17 +22,6 @@ for (const f of readdirSync(OUT).filter((f) => f.endsWith(".html"))) {
   writeFileSync(p, readFileSync(p, "utf8").replace(/<script src="http:\/\/127\.0\.0\.1:4800\/nav\.js"[^>]*><\/script>\n?/, ""));
 }
 
-const whole = join(OUT, "wholescan.js");
-let ws = readFileSync(whole, "utf8");
-for (const [from, to] of [
-  ['get("/api/sonar")', 'get("/data/sonar/sonar.json")'],
-  ['get("/api/sonar/z")', 'get("/data/sonar/sonar_z.bin")'],
-  ['get("/api/map")', 'get("/data/sonar/map.json")'],
-  ["`/api/sonar/img?area=${area()}`", '`/data/${!area() || area() === "chesapeake_mouth" ? "" : area() + "/"}sonar/sonar.png`'],
-  [" Double-click the seabed for sharp sonar.", ""],
-]) { if (!ws.includes(from)) throw new Error("wholescan.js changed, missing: " + from); ws = ws.replace(from, to); }
-writeFileSync(whole, ws);
-
 const tabs = join(OUT, "tabs.js");
 writeFileSync(tabs, readFileSync(tabs, "utf8").split("\n").filter((l) => !/^\s*\["(map|ev)",/.test(l)).join("\n"));
 
