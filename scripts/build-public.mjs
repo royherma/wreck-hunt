@@ -29,7 +29,7 @@ for (const [from, to] of [
   ['get("/api/sonar/z")', 'get("/data/sonar/sonar_z.bin")'],
   ['get("/api/map")', 'get("/data/sonar/map.json")'],
   ["`/api/sonar/img?area=${area()}`", '`/data/${!area() || area() === "chesapeake_mouth" ? "" : area() + "/"}sonar/sonar.png`'],
-  [" Double-click the seabed for sharp sonar.", ""],
+  [" Click away to unselect, double-click the seabed for sharp sonar.", " Click away to unselect."],
 ]) { if (!ws.includes(from)) throw new Error("wholescan.js changed, missing: " + from); ws = ws.replace(from, to); }
 writeFileSync(whole, ws);
 

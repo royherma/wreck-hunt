@@ -65,12 +65,20 @@ function init(host) {
       v.set(l.x, l.y * V.ex, l.z).project(camera);
       const vis = v.z < 1 && Math.abs(v.x) < 1.05 && Math.abs(v.y) < 1.05;
       l.el.style.display = vis ? "" : "none";
-      if (vis) l.el.style.transform = `translate(${((v.x + 1) / 2) * w}px, ${((1 - v.y) / 2) * h}px) translate(-50%, -130%)`;
+      if (!vis) continue;
+      const sx = ((v.x + 1) / 2) * w;
+      let sy = ((1 - v.y) / 2) * h;
+      for (const [ox, oz] of [[0, -l.r], [0, l.r], [-l.r, 0], [l.r, 0]]) {
+        v.set(l.x + ox, l.y * V.ex, l.z + oz).project(camera);
+        if (v.z < 1) sy = Math.min(sy, ((1 - v.y) / 2) * h);
+      }
+      l.el.style.transform = `translate(${sx}px, ${Math.max(sy, 14)}px) translate(-50%, calc(-100% - 8px))`;
     }
     const near = V.labels.reduce((b, l) => { const k = Math.hypot(l.x - controls.target.x, l.z - controls.target.z); return k < b[1] ? [l, k] : b; }, [null, Infinity]);
-    select(near[0] && near[1] < Math.max(300, d * 0.6) && d < 8000 ? near[0] : null);
+    const auto = near[0] && near[1] < Math.max(300, d * 0.6) && d < 8000 ? near[0] : null;
+    if (auto !== V.off) { V.off = null; select(auto); }
     if (V.sel) V.sel.ring.material.opacity = 0.75 + 0.25 * Math.sin(performance.now() / 260);
-    V.note(`${V.sel ? V.sel.name + " selected, " : ""}${d < 1000 ? Math.round(d) + " m" : (d / 1000).toFixed(1) + " km"} away, height x${V.ex.toFixed(1)}${V.patches.length ? `, sharp sonar in ${V.patches.length} spot${V.patches.length > 1 ? "s" : ""}` : ""}. Double-click the seabed for sharp sonar. W A S D or arrows to move, Q E to turn, Shift for faster.`);
+    V.note(`${V.sel ? V.sel.name + " selected, " : ""}${d < 1000 ? Math.round(d) + " m" : (d / 1000).toFixed(1) + " km"} away, height x${V.ex.toFixed(1)}${V.patches.length ? `, sharp sonar in ${V.patches.length} spot${V.patches.length > 1 ? "s" : ""}` : ""}. Click away to unselect, double-click the seabed for sharp sonar. W A S D or arrows to move, Q E to turn, Shift for faster.`);
   };
   requestAnimationFrame(tick);
   canvas.addEventListener("dblclick", (e) => { const p = pick(e, [V.terrain, ...V.patches.map((x) => x.mesh)]); if (p) sharpen(p.point); });
@@ -80,7 +88,9 @@ function init(host) {
   canvas.addEventListener("click", (e) => {
     if (down && Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4) return;
     const m = pickPoint(e);
-    if (m) flyTo(m.x, m.y, m.z, 260, true);
+    if (m) return flyTo(m.x, m.y, m.z, 260, true);
+    const p = pick(e, [V.terrain, ...V.patches.map((x) => x.mesh)]), q = p && V.world.worldToLocal(p.point.clone());
+    if (V.sel && !(q && Math.hypot(q.x - V.sel.x, q.z - V.sel.z) < V.sel.r)) { V.off = V.sel; select(null); }
   });
 }
 
@@ -235,7 +245,7 @@ async function loadArea() {
 function select(l) {
   if (V.sel === l) return;
   V.sel = l;
-  for (const q of V.labels) { q.el.classList.toggle("sel", q === l); q.ring.material.opacity = q === l ? 1 : 0.3; }
+  for (const q of V.labels) { q.el.classList.toggle("sel", q === l); q.ring.material.opacity = q === l ? 1 : 0; }
 }
 
 export function hideWhole() {
@@ -255,7 +265,7 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
   if (sig === V.sig) return;
   V.sig = sig;
   for (const l of V.labels) { l.el.remove(); V.world.remove(l.ring); l.ring.geometry.dispose(); l.ring.material.dispose(); }
-  V.labels = []; V.sel = null;
+  V.labels = []; V.sel = null; V.off = null;
   const spots = await Promise.all(items.map((it) => get("/api/where?id=" + it.id).then((r) => (r ? r.json() : null))));
   items.forEach((it, i) => {
     const s = spots[i];
@@ -267,7 +277,7 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
     el.innerHTML = `<i class="sw" style="background:${cols[i]}"></i>${label(it)}`;
     el.title = "Click to fly there, double-click to open";
     el.style.setProperty("--c", cols[i]);
-    el.addEventListener("click", () => { select(V.labels.find((l) => l.el === el)); flyTo(x, y, z, 220, true); });
+    el.addEventListener("click", () => { V.off = null; select(V.labels.find((l) => l.el === el)); flyTo(x, y, z, 220, true); });
     el.addEventListener("dblclick", () => onOpen(it));
     host.append(el);
     const r = Math.max((it.length_m || 40) / 2 + 25, 50);
@@ -276,7 +286,7 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
     ring.position.set(x, y + 2, z);
     ring.renderOrder = 6;
     V.world.add(ring);
-    V.labels.push({ el, x, y: y + 1, z, s, name: label(it), ring });
+    V.labels.push({ el, x, y: y + 1, z, s, name: label(it), ring, r: r * 1.09 });
   });
   const L = V.labels;
   if (!L.length) return;
