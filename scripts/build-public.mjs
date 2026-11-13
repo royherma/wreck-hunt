@@ -19,7 +19,7 @@ cpSync(join(ROOT, "public"), OUT, { recursive: true, filter: (src) => !LOCAL_ONL
 
 for (const f of readdirSync(OUT).filter((f) => f.endsWith(".html"))) {
   const p = join(OUT, f);
-  writeFileSync(p, readFileSync(p, "utf8").replace(/<script src="http:\/\/127\.0\.0\.1:4800\/nav\.js"[^>]*><\/script>\n?/, ""));
+  writeFileSync(p, readFileSync(p, "utf8").replace(/<script src="http:\/\/127\.0\.0\.1:4800\/nav\.js"[^>]*><\/script>\n?/, "").replace(/<span class="seg" id="caround".*?<\/span>/, ""));
 }
 
 const whole = join(OUT, "wholescan.js");

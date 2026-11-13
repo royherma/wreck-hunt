@@ -44,6 +44,7 @@ function readUrlState() {
   if (["true", "match"].includes(q.get("size"))) st.mode = q.get("size");
   if (q.get("around") === "whole" || ["250", "500", "1000"].includes(q.get("around"))) st.around = q.get("around") === "whole" ? "whole" : Number(q.get("around"));
   if (["1", "3", "6"].includes(q.get("stretch"))) st.stretch = Number(q.get("stretch"));
+  if (!document.getElementById("caround")) st.around = 0;
 }
 const shareState = () => ({ view: st.view === "3d" ? "3d" : null, lay: st.lay !== "row" ? st.lay : null, size: st.mode !== "true" ? st.mode : null, around: st.view === "3d" && st.around ? st.around : null, stretch: st.stretch || null });
 
