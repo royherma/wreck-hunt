@@ -67,7 +67,10 @@ function init(host) {
       l.el.style.display = vis ? "" : "none";
       if (vis) l.el.style.transform = `translate(${((v.x + 1) / 2) * w}px, ${((1 - v.y) / 2) * h}px) translate(-50%, -130%)`;
     }
-    V.note(`${d < 1000 ? Math.round(d) + " m" : (d / 1000).toFixed(1) + " km"} away, height x${V.ex.toFixed(1)}${V.patches.length ? `, sharp sonar in ${V.patches.length} spot${V.patches.length > 1 ? "s" : ""}` : ""}. Double-click the seabed for sharp sonar. W A S D or arrows to move, Q E to turn, Shift for faster.`);
+    const near = V.labels.reduce((b, l) => { const k = Math.hypot(l.x - controls.target.x, l.z - controls.target.z); return k < b[1] ? [l, k] : b; }, [null, Infinity]);
+    select(near[0] && near[1] < Math.max(300, d * 0.6) && d < 8000 ? near[0] : null);
+    if (V.sel) V.sel.ring.material.opacity = 0.75 + 0.25 * Math.sin(performance.now() / 260);
+    V.note(`${V.sel ? V.sel.name + " selected, " : ""}${d < 1000 ? Math.round(d) + " m" : (d / 1000).toFixed(1) + " km"} away, height x${V.ex.toFixed(1)}${V.patches.length ? `, sharp sonar in ${V.patches.length} spot${V.patches.length > 1 ? "s" : ""}` : ""}. Double-click the seabed for sharp sonar. W A S D or arrows to move, Q E to turn, Shift for faster.`);
   };
   requestAnimationFrame(tick);
   canvas.addEventListener("dblclick", (e) => { const p = pick(e, [V.terrain, ...V.patches.map((x) => x.mesh)]); if (p) sharpen(p.point); });
@@ -229,6 +232,12 @@ async function loadArea() {
   return true;
 }
 
+function select(l) {
+  if (V.sel === l) return;
+  V.sel = l;
+  for (const q of V.labels) { q.el.classList.toggle("sel", q === l); q.ring.material.opacity = q === l ? 1 : 0.3; }
+}
+
 export function hideWhole() {
   if (V) { V.on = false; V.host.hidden = true; }
 }
@@ -245,8 +254,8 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
   const sig = items.map((x) => x.id).join(",") + cols.join(",");
   if (sig === V.sig) return;
   V.sig = sig;
-  for (const l of V.labels) l.el.remove();
-  V.labels = [];
+  for (const l of V.labels) { l.el.remove(); V.world.remove(l.ring); l.ring.geometry.dispose(); l.ring.material.dispose(); }
+  V.labels = []; V.sel = null;
   const spots = await Promise.all(items.map((it) => get("/api/where?id=" + it.id).then((r) => (r ? r.json() : null))));
   items.forEach((it, i) => {
     const s = spots[i];
@@ -257,10 +266,17 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
     el.className = "wl" + (it.group === "charted" ? " kn" : " nw");
     el.innerHTML = `<i class="sw" style="background:${cols[i]}"></i>${label(it)}`;
     el.title = "Click to fly there, double-click to open";
-    el.addEventListener("click", () => flyTo(x, y, z, 220, true));
+    el.style.setProperty("--c", cols[i]);
+    el.addEventListener("click", () => { select(V.labels.find((l) => l.el === el)); flyTo(x, y, z, 220, true); });
     el.addEventListener("dblclick", () => onOpen(it));
     host.append(el);
-    V.labels.push({ el, x, y: y + 1, z, s, name: label(it) });
+    const r = Math.max((it.length_m || 40) / 2 + 25, 50);
+    const ring = new THREE.Mesh(new THREE.RingGeometry(r, r * 1.09, 96), new THREE.MeshBasicMaterial({ color: cols[i], transparent: true, opacity: 0, depthTest: false, side: THREE.DoubleSide }));
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.set(x, y + 2, z);
+    ring.renderOrder = 6;
+    V.world.add(ring);
+    V.labels.push({ el, x, y: y + 1, z, s, name: label(it), ring });
   });
   const L = V.labels;
   if (!L.length) return;
