@@ -2,6 +2,7 @@ import { f1, sc } from "/lib.js";
 import { centreOf, frame, paintField, contourSegs, profile } from "/shape.js";
 import { show3d, hide3d, fit3d } from "/cmp3d.js";
 import { drawMap } from "/cmpmap.js";
+import { showWhole, hideWhole } from "/wholescan.js";
 import { shareUrl, copyShare } from "/share.js";
 
 const $ = (s) => document.querySelector(s);
@@ -39,7 +40,7 @@ function readUrlState() {
   urlRead = true;
   const q = new URLSearchParams(location.search);
   if (["pics", "3d"].includes(q.get("view"))) st.view = q.get("view");
-  if (["row", "stack"].includes(q.get("lay"))) st.lay = q.get("lay");
+  if (["row", "stack", "real"].includes(q.get("lay"))) st.lay = q.get("lay");
   if (["true", "match"].includes(q.get("size"))) st.mode = q.get("size");
   if (q.get("around") === "whole" || ["250", "500", "1000"].includes(q.get("around"))) st.around = q.get("around") === "whole" ? "whole" : Number(q.get("around"));
   if (["1", "3", "6"].includes(q.get("stretch"))) st.stretch = Number(q.get("stretch"));
@@ -123,10 +124,14 @@ function render() {
   $("#tiles").hidden = d3;
   $("#c3d").hidden = !d3;
   $("#cmpview").classList.toggle("v3d", d3);
-  if (d3) { if (st.around) loadWide(items).then(() => st.open && st.view === "3d" && go3d(st.items, colorsFor(st.items))); go3d(items, cols); }
-  else { hide3d(); tiles(items, cols); }
-  $("#c3dmap").hidden = !(d3 && st.map);
-  if (d3 && st.map) drawMap($("#c3dmap"), items, cols, st.ctx.label);
+  const real = d3 && st.lay === "real";
+  $("#cmpview").classList.toggle("vreal", real);
+  if (real) { hide3d(); showWhole({ host: $("#c3dw"), items, cols, label: st.ctx.label, onOpen: st.ctx.open, stretch: st.stretch, note: (t) => { $("#c3dh").textContent = t; } }); }
+  else hideWhole();
+  if (d3 && !real) { if (st.around) loadWide(items).then(() => st.open && st.view === "3d" && st.lay !== "real" && go3d(st.items, colorsFor(st.items))); go3d(items, cols); }
+  else if (!d3) { hide3d(); tiles(items, cols); }
+  $("#c3dmap").hidden = !(d3 && st.map && !real);
+  if (d3 && st.map && !real) drawMap($("#c3dmap"), items, cols, st.ctx.label);
   stack(items, cols);
   profiles(items, cols);
   facts(items, cols);

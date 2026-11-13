@@ -283,5 +283,16 @@ body.hastray #gridview{padding-bottom:96px}
 #caround .chip{padding:2px 9px;font-size:11.5px}
 #cmpview.v3d #clay{margin-left:0}
 #cmpview:not(.v3d) #caround{display:none}
+#c3dw{position:absolute;inset:0;z-index:2;background:linear-gradient(#fff,#EAF2F6);overflow:hidden}
+#c3dw[hidden]{display:none}
+#wsc{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+#cmpview.vreal #c3dc,#cmpview.vreal #c3dl{visibility:hidden}
+#cmpview.vreal #caround,#cmpview.vreal #cmapb{display:none}
+#cmpview.vreal #c3dh{z-index:3}
+#c3dw .wl{all:unset;position:absolute;left:0;top:0;z-index:3;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;background:rgba(255,255,255,.94);border:1px solid var(--line);padding:2px 7px;font:600 11.5px var(--sans);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+#c3dw .wl.nw{border:2px solid #C2187F;color:#C2187F}
+#c3dw .wl .wkm{font:italic 500 11px var(--serif,Georgia);color:var(--muted,#5b6b76);margin-left:4px}
+#c3dw .wtip{position:absolute;left:0;top:0;z-index:4;pointer-events:none;background:#13202A;color:#fff;font:500 11.5px var(--sans);padding:3px 8px;white-space:nowrap}
+#c3dw .wtip[hidden]{display:none}
 .btn.share{border-color:#A3197F;color:#A3197F}
 .btn.share:hover{background:#A3197F;color:#fff}
