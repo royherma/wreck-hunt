@@ -250,6 +250,12 @@ function select(l) {
   paint();
 }
 
+function bright(css) {
+  const c = new THREE.Color(css), h = {};
+  c.getHSL(h);
+  return c.setHSL(h.h, Math.max(h.s, 0.6), Math.max(h.l, 0.55)).toArray();
+}
+
 function paint() {
   const l = V.sel;
   for (const pt of V.patches) {
@@ -296,7 +302,7 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
     el.addEventListener("dblclick", () => onOpen(it));
     host.append(el);
     const r = Math.max((it.length_m || 40) / 2 + 25, 50);
-    V.labels.push({ el, x, y: y + 1, z, s, name: label(it), r, hull: (it.length_m || 40) / 2 + 12, col: new THREE.Color(cols[i]).toArray() });
+    V.labels.push({ el, x, y: y + 1, z, s, name: label(it), r, hull: (it.length_m || 40) / 2 + 12, col: bright(cols[i]) });
   });
   const L = V.labels;
   if (!L.length) return;
