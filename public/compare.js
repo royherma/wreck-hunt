@@ -127,7 +127,7 @@ function render() {
   $("#cmpview").classList.toggle("v3d", d3);
   const real = d3 && st.lay === "real";
   $("#cmpview").classList.toggle("vreal", real);
-  if (real) { hide3d(); showWhole({ host: $("#c3dw"), items, cols, label: st.ctx.label, onOpen: st.ctx.open, stretch: st.stretch, note: (t) => { $("#c3dh").textContent = t; } }); }
+  if (real) { hide3d(); showWhole({ host: $("#c3dw"), items, cols, label: st.ctx.label, onOpen: st.ctx.open, stretch: st.stretch, hfs: st.hfs, note: (t) => { $("#c3dh").textContent = t; } }); }
   else hideWhole();
   if (d3 && !real) { if (st.around) loadWide(items).then(() => st.open && st.view === "3d" && st.lay !== "real" && go3d(st.items, colorsFor(st.items))); go3d(items, cols); }
   else if (!d3) { hide3d(); tiles(items, cols); }

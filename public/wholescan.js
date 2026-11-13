@@ -32,7 +32,7 @@ function init(host) {
   controls.zoomSpeed = 1.3;
   const world = new THREE.Group();
   scene.add(world);
-  V = { host, canvas, renderer, scene, camera, controls, world, on: false, patches: [], area: null, labels: [], ex: 1 };
+  V = { host, canvas, renderer, scene, camera, controls, world, on: false, patches: [], cups: [], area: null, labels: [], ex: 1 };
   const size = () => {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
@@ -126,6 +126,35 @@ function flyTo(x, y, z, dist, sharp) {
   if (sharp) sharpen(V.world.localToWorld(new THREE.Vector3(x, y, z)), 300);
 }
 
+const C = [[0.66, 0.81, 0.88], [0.83, 0.91, 0.95], [0.55, 0.73, 0.82], [0.29, 0.51, 0.64], [0.12, 0.31, 0.42]];
+const mixc = (a, b, t) => a.map((v, q) => v + (b[q] - v) * Math.min(Math.max(t, 0), 1));
+function surface(pos, idx, hs) {
+  const col = new Float32Array(hs.length * 3);
+  for (let k = 0; k < hs.length; k++) {
+    const h = hs[k], cc = h < 0 ? mixc(C[1], C[0], -h / 0.9) : h < 1.2 ? mixc(C[1], C[2], h / 1.2) : h < 3 ? mixc(C[2], C[3], (h - 1.2) / 1.8) : mixc(C[3], C[4], (h - 3) / 3);
+    col[k * 3] = cc[0]; col[k * 3 + 1] = cc[1]; col[k * 3 + 2] = cc[2];
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setAttribute("color", new THREE.BufferAttribute(col, 3));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  return { mesh: new THREE.Mesh(g, new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide })), base: col.slice() };
+}
+
+function closeup(l, hf) {
+  const n = hf.w, c = hf.cell_m, pos = new Float32Array(n * n * 3), idx = [];
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+    const o = (j * n + i) * 3;
+    pos[o] = l.x + (i - (n - 1) / 2) * c; pos[o + 1] = l.y - 0.7 + hf.z[j * n + i]; pos[o + 2] = l.z + (j - (n - 1) / 2) * c;
+    if (i < n - 1 && j < n - 1) { const a = j * n + i, b = a + 1, cc = a + n, dd = cc + 1; idx.push(a, cc, b, b, cc, dd); }
+  }
+  const hs = Float32Array.from(hf.z), { mesh, base } = surface(pos, idx, hs);
+  mesh.renderOrder = 2;
+  V.world.add(mesh);
+  V.cups.push({ mesh, hs, base });
+}
+
 async function sharpen(worldPt, force) {
   const p = V.world.worldToLocal(worldPt.clone());
   const lat = V.lat0 - p.z / V.ky, lon = V.lon0 + p.x / V.kx;
@@ -155,23 +184,12 @@ async function sharpen(worldPt, force) {
     if (ok(a) && ok(b) && ok(cc) && ok(dd)) idx.push(a, cc, b, b, cc, dd);
   }
   const sorted = valid.slice().sort((x, y) => x - y), med = sorted[Math.floor(sorted.length / 2)] ?? 0;
-  const hs = new Float32Array(n * n), col = new Float32Array(n * n * 3), C = [[0.66, 0.81, 0.88], [0.83, 0.91, 0.95], [0.55, 0.73, 0.82], [0.29, 0.51, 0.64], [0.12, 0.31, 0.42]];
-  const mixc = (a, b, t) => a.map((v, q) => v + (b[q] - v) * Math.min(Math.max(t, 0), 1));
-  for (let k = 0; k < n * n; k++) {
-    const h = hf.z[k] == null ? 0 : med - hf.z[k];
-    hs[k] = h;
-    const cc = h < 0 ? mixc(C[1], C[0], -h / 0.9) : h < 1.2 ? mixc(C[1], C[2], h / 1.2) : h < 3 ? mixc(C[2], C[3], (h - 1.2) / 1.8) : mixc(C[3], C[4], (h - 3) / 3);
-    col[k * 3] = cc[0]; col[k * 3 + 1] = cc[1]; col[k * 3 + 2] = cc[2];
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-  g.setAttribute("color", new THREE.BufferAttribute(col, 3));
-  g.setIndex(idx);
-  g.computeVertexNormals();
-  const mesh = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }));
+  const hs = Float32Array.from(hf.z, (v) => (v == null ? 0 : med - v));
+  const { mesh, base: col } = surface(pos, idx, hs);
+  mesh.material.polygonOffset = true; mesh.material.polygonOffsetFactor = 2; mesh.material.polygonOffsetUnits = 2;
   mesh.renderOrder = 1;
   V.world.add(mesh);
-  V.patches.push({ key, mesh, hs, base: col.slice() });
+  V.patches.push({ key, mesh, hs, base: col });
   paint();
   while (V.patches.length > 10) { const o = V.patches.shift(); V.world.remove(o.mesh); o.mesh.geometry.dispose(); o.mesh.material.dispose(); }
 }
@@ -259,7 +277,7 @@ function bright(css) {
 
 function paint() {
   const l = V.sel;
-  for (const pt of V.patches) {
+  for (const pt of [...V.patches, ...V.cups]) {
     const a = pt.mesh.geometry.attributes.color, pos = pt.mesh.geometry.attributes.position.array;
     a.array.set(pt.base);
     if (l) for (let k = 0; k < pt.hs.length; k++) {
@@ -274,7 +292,7 @@ export function hideWhole() {
   if (V) { V.on = false; V.host.hidden = true; }
 }
 
-export async function showWhole({ host, items, cols, label, onOpen, stretch, note }) {
+export async function showWhole({ host, items, cols, label, onOpen, stretch, note, hfs }) {
   if (!V) init(host);
   V.host.hidden = false;
   V.on = true;
@@ -287,6 +305,8 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
   if (sig === V.sig) return;
   V.sig = sig;
   for (const l of V.labels) l.el.remove();
+  for (const o of V.cups || []) { V.world.remove(o.mesh); o.mesh.geometry.dispose(); o.mesh.material.dispose(); }
+  V.cups = [];
   V.labels = []; V.sel = null; V.off = null;
   const spots = await Promise.all(items.map((it) => whereOf(it.id)));
   items.forEach((it, i) => {
@@ -304,6 +324,7 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
     host.append(el);
     const r = Math.max((it.length_m || 40) / 2 + 25, 50);
     V.labels.push({ el, x, y: y + 1, z, s, name: label(it), r, hull: (it.length_m || 40) / 2 + 12, col: bright(cols[i]) });
+    if (hfs?.get(it.id)) closeup(V.labels.at(-1), hfs.get(it.id));
   });
   const L = V.labels;
   if (!L.length) return;
