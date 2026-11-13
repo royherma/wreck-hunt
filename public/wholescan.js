@@ -68,7 +68,7 @@ function init(host) {
       if (!vis) continue;
       const sx = ((v.x + 1) / 2) * w;
       let sy = ((1 - v.y) / 2) * h;
-      for (const [ox, oz] of [[0, -l.r], [0, l.r], [-l.r, 0], [l.r, 0]]) {
+      for (const [ox, oz] of [[0, -l.hull], [0, l.hull], [-l.hull, 0], [l.hull, 0]]) {
         v.set(l.x + ox, l.y * V.ex, l.z + oz).project(camera);
         if (v.z < 1) sy = Math.min(sy, ((1 - v.y) / 2) * h);
       }
@@ -77,7 +77,6 @@ function init(host) {
     const near = V.labels.reduce((b, l) => { const k = Math.hypot(l.x - controls.target.x, l.z - controls.target.z); return k < b[1] ? [l, k] : b; }, [null, Infinity]);
     const auto = near[0] && near[1] < Math.max(300, d * 0.6) && d < 8000 ? near[0] : null;
     if (auto !== V.off) { V.off = null; select(auto); }
-    if (V.sel) V.sel.ring.material.opacity = 0.75 + 0.25 * Math.sin(performance.now() / 260);
     V.note(`${V.sel ? V.sel.name + " selected, " : ""}${d < 1000 ? Math.round(d) + " m" : (d / 1000).toFixed(1) + " km"} away, height x${V.ex.toFixed(1)}${V.patches.length ? `, sharp sonar in ${V.patches.length} spot${V.patches.length > 1 ? "s" : ""}` : ""}. Click away to unselect, double-click the seabed for sharp sonar. W A S D or arrows to move, Q E to turn, Shift for faster.`);
   };
   requestAnimationFrame(tick);
@@ -155,10 +154,11 @@ async function sharpen(worldPt, force) {
     if (ok(a) && ok(b) && ok(cc) && ok(dd)) idx.push(a, cc, b, b, cc, dd);
   }
   const sorted = valid.slice().sort((x, y) => x - y), med = sorted[Math.floor(sorted.length / 2)] ?? 0;
-  const col = new Float32Array(n * n * 3), C = [[0.66, 0.81, 0.88], [0.83, 0.91, 0.95], [0.55, 0.73, 0.82], [0.29, 0.51, 0.64], [0.12, 0.31, 0.42]];
+  const hs = new Float32Array(n * n), col = new Float32Array(n * n * 3), C = [[0.66, 0.81, 0.88], [0.83, 0.91, 0.95], [0.55, 0.73, 0.82], [0.29, 0.51, 0.64], [0.12, 0.31, 0.42]];
   const mixc = (a, b, t) => a.map((v, q) => v + (b[q] - v) * Math.min(Math.max(t, 0), 1));
   for (let k = 0; k < n * n; k++) {
     const h = hf.z[k] == null ? 0 : med - hf.z[k];
+    hs[k] = h;
     const cc = h < 0 ? mixc(C[1], C[0], -h / 0.9) : h < 1.2 ? mixc(C[1], C[2], h / 1.2) : h < 3 ? mixc(C[2], C[3], (h - 1.2) / 1.8) : mixc(C[3], C[4], (h - 3) / 3);
     col[k * 3] = cc[0]; col[k * 3 + 1] = cc[1]; col[k * 3 + 2] = cc[2];
   }
@@ -170,7 +170,8 @@ async function sharpen(worldPt, force) {
   const mesh = new THREE.Mesh(g, new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }));
   mesh.renderOrder = 1;
   V.world.add(mesh);
-  V.patches.push({ key, mesh });
+  V.patches.push({ key, mesh, hs, base: col.slice() });
+  paint();
   while (V.patches.length > 10) { const o = V.patches.shift(); V.world.remove(o.mesh); o.mesh.geometry.dispose(); o.mesh.material.dispose(); }
 }
 
@@ -245,7 +246,21 @@ async function loadArea() {
 function select(l) {
   if (V.sel === l) return;
   V.sel = l;
-  for (const q of V.labels) { q.el.classList.toggle("sel", q === l); q.ring.material.opacity = q === l ? 1 : 0; }
+  for (const q of V.labels) q.el.classList.toggle("sel", q === l);
+  paint();
+}
+
+function paint() {
+  const l = V.sel;
+  for (const pt of V.patches) {
+    const a = pt.mesh.geometry.attributes.color, pos = pt.mesh.geometry.attributes.position.array;
+    a.array.set(pt.base);
+    if (l) for (let k = 0; k < pt.hs.length; k++) {
+      if (pt.hs[k] < 0.5 || Math.hypot(pos[k * 3] - l.x, pos[k * 3 + 2] - l.z) > l.hull) continue;
+      for (let c = 0; c < 3; c++) a.array[k * 3 + c] += (l.col[c] - a.array[k * 3 + c]) * 0.85;
+    }
+    a.needsUpdate = true;
+  }
 }
 
 export function hideWhole() {
@@ -264,7 +279,7 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
   const sig = items.map((x) => x.id).join(",") + cols.join(",");
   if (sig === V.sig) return;
   V.sig = sig;
-  for (const l of V.labels) { l.el.remove(); V.world.remove(l.ring); l.ring.geometry.dispose(); l.ring.material.dispose(); }
+  for (const l of V.labels) l.el.remove();
   V.labels = []; V.sel = null; V.off = null;
   const spots = await Promise.all(items.map((it) => get("/api/where?id=" + it.id).then((r) => (r ? r.json() : null))));
   items.forEach((it, i) => {
@@ -281,12 +296,7 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
     el.addEventListener("dblclick", () => onOpen(it));
     host.append(el);
     const r = Math.max((it.length_m || 40) / 2 + 25, 50);
-    const ring = new THREE.Mesh(new THREE.RingGeometry(r, r * 1.09, 96), new THREE.MeshBasicMaterial({ color: cols[i], transparent: true, opacity: 0, depthTest: false, side: THREE.DoubleSide }));
-    ring.rotation.x = -Math.PI / 2;
-    ring.position.set(x, y + 2, z);
-    ring.renderOrder = 6;
-    V.world.add(ring);
-    V.labels.push({ el, x, y: y + 1, z, s, name: label(it), ring, r: r * 1.09 });
+    V.labels.push({ el, x, y: y + 1, z, s, name: label(it), r, hull: (it.length_m || 40) / 2 + 12, col: new THREE.Color(cols[i]).toArray() });
   });
   const L = V.labels;
   if (!L.length) return;
