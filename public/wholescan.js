@@ -5,6 +5,7 @@ import { keyStep, useKeys } from "/keys3d.js";
 const get = (u) => fetch(u, { cache: "no-store" }).then((r) => (r.ok ? r : null)).catch(() => null);
 const area = () => encodeURIComponent(window.WH_AREA || "");
 let V = null;
+const whereOf = (id) => get("/api/where?id=" + id).then((r) => (r ? r.json() : null));
 const DOT = (() => {
   const c = document.createElement("canvas"); c.width = c.height = 32;
   const g = c.getContext("2d"); g.fillStyle = "#fff"; g.beginPath(); g.arc(16, 16, 13, 0, Math.PI * 2); g.fill();
@@ -287,7 +288,7 @@ export async function showWhole({ host, items, cols, label, onOpen, stretch, not
   V.sig = sig;
   for (const l of V.labels) l.el.remove();
   V.labels = []; V.sel = null; V.off = null;
-  const spots = await Promise.all(items.map((it) => get("/api/where?id=" + it.id).then((r) => (r ? r.json() : null))));
+  const spots = await Promise.all(items.map((it) => whereOf(it.id)));
   items.forEach((it, i) => {
     const s = spots[i];
     if (!s?.ok) return;

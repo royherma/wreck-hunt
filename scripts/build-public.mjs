@@ -30,6 +30,8 @@ for (const [from, to] of [
   ['get("/api/map")', 'get("/data/sonar/map.json")'],
   ["`/api/sonar/img?area=${area()}`", '`/data/${!area() || area() === "chesapeake_mouth" ? "" : area() + "/"}sonar/sonar.png`'],
   [" Click away to unselect, double-click the seabed for sharp sonar.", " Click away to unselect."],
+  ["async function sharpen(worldPt, force) {", "async function sharpen(worldPt, force) {\n  return;"],
+  ['const whereOf = (id) => get("/api/where?id=" + id).then((r) => (r ? r.json() : null));', 'const whereOf = (id) => get(`/data/${!area() || area() === "chesapeake_mouth" ? "" : area() + "/"}sonar/where.json`).then((r) => (r ? r.json() : null)).then((m) => (m && m[id] ? { ok: true, ...m[id] } : null));'],
 ]) { if (!ws.includes(from)) throw new Error("wholescan.js changed, missing: " + from); ws = ws.replace(from, to); }
 writeFileSync(whole, ws);
 
@@ -53,6 +55,9 @@ for (const a of ship) {
     for (const f of ["sonar.json", "sonar.png", "sonar_z.bin"]) cpSync(join(sonar, f), join(dst, "sonar", f));
     const m = JSON.parse(readFileSync(base, "utf8"));
     writeFileSync(join(dst, "sonar/map.json"), JSON.stringify({ ok: true, known: m.known || [], areas: m.areas || [], leads: [] }));
+    const pw = join(ROOT, "out", a, "private/where.json"), items = JSON.parse(readFileSync(join(src, "all.json"), "utf8")).items || [];
+    const charted = new Set(items.filter((i) => i.group === "charted").map((i) => i.id)), w = existsSync(pw) ? JSON.parse(readFileSync(pw, "utf8")) : {};
+    writeFileSync(join(dst, "sonar/where.json"), JSON.stringify(Object.fromEntries(Object.entries(w).filter(([id]) => charted.has(id)).map(([id, v]) => [id, { lat: v.lat, lon: v.lon }]))));
   }
   const h = JSON.parse(readFileSync(join(src, "hunt.json"), "utf8")), L = h.leads || [];
   list.push({ key: a, name: h.area?.name || a, source: h.area?.source || "NOAA", km2: h.funnel?.[0]?.count ?? h.area?.sonar_km2 ?? null, closeups: h.funnel?.[3]?.count ?? null,
